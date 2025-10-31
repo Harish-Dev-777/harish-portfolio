@@ -130,7 +130,7 @@ const Hero = () => {
       </div>
 
       <div className="robotModel">
-        {/* <spline-viewer url="https://prod.spline.design/dJp7whPNR-mnCs68/scene.splinecode"></spline-viewer> */}
+        <spline-viewer url="https://prod.spline.design/dJp7whPNR-mnCs68/scene.splinecode"></spline-viewer>
       </div>
     </div>
   );
