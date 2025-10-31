@@ -1,0 +1,32 @@
+.paragraph {
+  font-size: 30px;
+  max-width: 800px;
+  text-align: justify;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 1.6; /* smoother line spacing */
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  padding: 40px 0; /* balanced vertical space */
+  min-height: auto; /* only takes natural text height */
+}
+
+.word {
+  margin-top: 10px;
+  margin-right: 10px;
+  position: relative;
+  display: inline-block;
+}
+
+.character {
+  position: relative;
+  display: inline-block;
+}
+
+.character span {
+  display: inline-block;
+  opacity: 0.2;
+  will-change: opacity;
+}

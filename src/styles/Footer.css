@@ -1,0 +1,275 @@
+/* === Footer Base === */
+#footer {
+  background: radial-gradient(circle at top left, #0d0d10, #08080a 80%);
+  color: #f5f5f5;
+  padding: 12vh 10vw 6vh;
+  overflow: hidden;
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: "Inter", sans-serif;
+}
+
+/* Floating Gradient Aura */
+#footer::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  left: -10%;
+  width: 120%;
+  height: 150%;
+  background: radial-gradient(circle at 40% 30%, rgba(255, 255, 255, 0.08), transparent 70%);
+  z-index: 1;
+  animation: footerGlow 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes footerGlow {
+  0% {
+    opacity: 0.4;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0.7;
+    transform: translateY(-20px);
+  }
+}
+
+/* === Grid Layout === */
+.footer-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 5rem;
+  margin-bottom: 6vh;
+  align-items: start;
+}
+
+/* === Brand === */
+.footer-brand h1 {
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, #ffffff, #c9c9c9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+  transition: transform 0.4s ease, text-shadow 0.4s ease;
+}
+
+.footer-brand h1:hover {
+  transform: translateY(-3px);
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+}
+
+.footer-brand p {
+  font-size: 1.1rem;
+  color: #c4c4c4;
+  max-width: 320px;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+/* === Section Titles === */
+.footer-nav h3,
+.footer-social h3,
+.footer-contact h3 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  color: #aaa;
+  letter-spacing: 1.5px;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+/* === Custom Underline for Each Section === */
+.footer-nav h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #ff7e5f, transparent);
+}
+
+.footer-social h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #5fa8ff, transparent);
+}
+
+.footer-contact h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #00ffd0, transparent);
+}
+
+/* === Links === */
+.footer-nav ul,
+.footer-social ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.footer-nav a,
+.footer-social a,
+.footer-contact a {
+  color: #e6e6e6;
+  font-size: 1.05rem;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.35s ease;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+/* === Underline Hover Animation === */
+.footer-nav a::before,
+.footer-social a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1px;
+  background: linear-gradient(90deg, #ffffff, transparent);
+  transition: width 0.4s ease;
+}
+
+.footer-nav a:hover::before,
+.footer-social a:hover::before {
+  width: 100%;
+}
+
+/* === Hover Effects === */
+.footer-nav a:hover,
+.footer-social a:hover,
+.footer-contact a:hover {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+  transform: translateX(4px);
+}
+
+/* === Contact Info === */
+.footer-contact p {
+  margin-bottom: 0.6rem;
+  color: #bdbdbd;
+}
+
+.footer-contact a {
+  color: #bfbfbf;
+  transition: all 0.3s ease;
+}
+
+.footer-contact a:hover {
+  color: #00bfff;
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+}
+
+/* === Footer Divider === */
+.footer-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  margin: 4vh 0;
+  opacity: 0.6;
+}
+
+/* === Footer Bottom === */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 3vh;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.footer-bottom p {
+  font-size: 0.95rem;
+  color: #9a9a9a;
+  letter-spacing: 0.6px;
+  transition: color 0.3s ease;
+}
+
+.footer-bottom p:hover {
+  color: #ffffff;
+}
+
+/* === Subtle Glow on Hover === */
+a:hover {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+}
+
+/* === Responsive === */
+@media (max-width: 1024px) {
+  .footer-grid {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #footer {
+    padding: 8vh 6vw 4vh;
+  }
+
+  .footer-grid {
+    gap: 2.5rem;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-brand {
+    grid-column: span 2;
+  }
+
+  .footer-brand h1 {
+    font-size: 2.3rem;
+  }
+
+  .footer-nav h3,
+  .footer-social h3,
+  .footer-contact h3 {
+    font-size: 1rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-brand {
+    text-align: center;
+  }
+
+  .footer-brand p {
+    margin: 0 auto;
+  }
+
+  .footer-nav,
+  .footer-social,
+  .footer-contact {
+    text-align: center;
+  }
+
+  .footer-nav a,
+  .footer-social a {
+    justify-content: center;
+  }
+}

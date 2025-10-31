@@ -1,0 +1,263 @@
+#home {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-color: var(--color-primary-bg);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.robotModel {
+  position: absolute;
+  width: 80%;
+  right: -200px;
+  top: 10px;
+  z-index: 0;
+}
+
+/* === Title === */
+.heroTitle {
+  font-size: 100px;
+  padding-top: 5vw;
+  margin-left: 42px;
+  color: var(--text-primary);
+  z-index: 5;
+  position: relative;
+}
+
+/* === Subtitle === */
+.subTitle {
+  position: absolute;
+  left: 45px;
+  top: 35vh;
+  color: var(--text-secondary);
+  max-width: 600px;
+  font-size: 1.4rem;
+  line-height: 1.4;
+}
+
+/* === Buttons === */
+.btns {
+  top: 45vh;
+  left: 42px;
+  position: absolute;
+  display: flex;
+  gap: 3em;
+  z-index: 10;
+}
+
+/* View My Work button */
+.work {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 19px;
+  cursor: pointer;
+  color: var(--text-primary);
+  background-color: transparent;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.work::before,
+.work::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.work::before {
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.work::after {
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: var(--text-primary);
+}
+
+.work:hover {
+  color: var(--color-primary-bg);
+  border-color: var(--text-primary);
+}
+
+.work:hover::before {
+  top: -35%;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+  background-color: var(--text-primary);
+}
+
+.work:hover::after {
+  top: -45%;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+  background-color: var(--text-primary);
+}
+
+/* Hire Me button */
+.hireBtn {
+  border: 1px solid var(--border-color);
+  background-color: var(--text-primary);
+  color: var(--color-primary-bg);
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.hireBtn .dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: var(--color-primary-bg);
+  transition: transform 0.3s ease;
+}
+
+.hireBtn .label {
+  transition: all 0.3s ease;
+}
+
+.hireBtn:hover .label {
+  transform: translateX(12px);
+  opacity: 0;
+}
+
+.hireBtn .hoverLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-secondary-bg);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease;
+}
+
+.hireBtn:hover .hoverLayer {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* === Slider === */
+.sliderContainer {
+  position: absolute;
+  top: calc(100vh - 300px);
+}
+
+.slider {
+  position: relative;
+  display: flex;
+  white-space: nowrap;
+}
+
+.slider h1 {
+  margin: 0;
+  font-size: 200px;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: var(--color-tertiary-bg);
+  opacity: 0.6;
+}
+
+.slider h1:nth-of-type(2) {
+  position: absolute;
+  left: 100%;
+}
+
+/* === Responsive: Tablet (768px–1024px) === */
+@media (max-width: 1024px) {
+  .heroTitle {
+    font-size: 80px;
+    margin-left: 30px;
+    padding-top: 12vh;
+  }
+
+  .subTitle {
+    font-size: 1.2rem;
+    max-width: 80%;
+    left: 30px;
+    top: 38vh;
+  }
+
+  .btns {
+    left: 30px;
+    top: 52vh;
+    gap: 2em;
+  }
+
+  .robotModel {
+    width: 60%;
+    right: -100px;
+    top: 60px;
+  }
+
+  .slider h1 {
+    font-size: 150px;
+  }
+}
+
+/* === Responsive: Mobile (max-width: 640px) === */
+@media (max-width: 640px) {
+  .heroTitle {
+    font-size: 55px;
+    margin-left: 20px;
+    padding-top: 20vh;
+    line-height: 1.1;
+  }
+
+  .subTitle {
+    position: relative;
+    top: 20px;
+    left: 20px;
+    font-size: 1.05rem;
+    width: 90%;
+    line-height: 1.5;
+  }
+
+  .btns {
+    position: relative;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em;
+  }
+
+  .work,
+  .hireBtn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  .sliderContainer {
+    top: calc(100vh - 200px);
+  }
+
+  .slider h1 {
+    font-size: 90px;
+    opacity: 0.5;
+  }
+
+  .robotModel {
+    display: none; 
+  }
+}

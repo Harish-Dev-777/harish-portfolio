@@ -1,0 +1,205 @@
+#about.about-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-primary-bg);
+  color: white;
+  overflow: visible;
+  padding: 6rem 2rem;
+  gap: 5rem;
+}
+
+/* === Title === */
+.about-title {
+  font-size: 5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  transition: transform 0.4s ease;
+}
+
+.about-title:hover {
+  transform: scale(1.05);
+}
+
+/* === Grid Layout (Image + Paragraph) === */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 2rem;
+}
+
+/* === Image Section === */
+.about-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-image img {
+  width: 420px;
+  max-width: 100%;
+  border-radius: 1.5rem;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), filter 0.8s ease;
+}
+
+.about-image img:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* === Paragraph Section === */
+.about-content {
+  font-size: 1.15rem;
+  color: #d4d4d8;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* === Tech Stack Title === */
+.tech-stack-title {
+  font-size: 3.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+  letter-spacing: 2px;
+  transition: transform 0.4s ease, opacity 0.8s ease;
+  opacity: 0;
+  animation: fadeInUp 1.2s ease-in-out forwards;
+}
+
+.tech-stack-title:hover {
+  transform: scale(1.05);
+}
+
+/* === Logo Loop Section === */
+.about-logoLoop {
+  width: 100%;
+  overflow: visible; /* <-- fixes the logo tooltip clipping */
+  position: relative;
+  margin-bottom: 6rem;
+  opacity: 0;
+  animation: fadeInUp 1.5s ease-in-out 0.3s forwards;
+}
+
+/* === Quote Section === */
+.about-quote-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, #0d0d12 0%, #000000 100%);
+  padding: 0 3rem;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.about-quote {
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1.3;
+  width: 80%;
+  color: #e5e5e5;
+  opacity: 0; /* will fade in with GSAP */
+  letter-spacing: 0.5px;
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+.about-quote span {
+  color: #9ca3af;
+}
+
+/* Subtle glowing text effect on scroll (for GSAP pulse animation) */
+.about-quote.active {
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* === Scroller Section === */
+.about-scroller {
+  margin-bottom: 6rem;
+  animation: fadeInUp 1.2s ease-in-out both;
+  width: 100%;
+}
+
+/* === Animation === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Responsive === */
+@media (max-width: 992px) {
+  #about.about-section {
+    padding: 4rem 2rem;
+    gap: 4rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .about-title {
+    font-size: 4rem;
+  }
+
+  .tech-stack-title {
+    font-size: 2.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .about-quote {
+    font-size: 2.4rem;
+    width: 90%;
+  }
+
+  .about-image img {
+    width: 340px;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-title {
+    font-size: 3rem;
+  }
+
+  .tech-stack-title {
+    font-size: 2.2rem;
+  }
+
+  .about-quote {
+    font-size: 1.8rem;
+  }
+
+  .about-image img {
+    width: 260px;
+  }
+
+  .about-content {
+    font-size: 1rem;
+  }
+
+  .about-grid {
+    gap: 2rem;
+  }
+}

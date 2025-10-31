@@ -1,0 +1,313 @@
+#projects {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: var(--color-primary-bg);
+  color: var(--text-primary);
+  padding-bottom: 10vh;
+}
+
+/* === Project Wrapper === */
+.projectCard {
+  width: 85vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.projectCard h1 {
+  font-size: 6vw;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 5vh;
+  color: var(--text-primary);
+  letter-spacing: 2px;
+}
+
+/* === Individual Project Card === */
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--text-secondary);
+  padding: 50px 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.card h2 {
+  font-size: 3.5vw;
+  font-weight: 500;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.cardBottom {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.card p {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.card:hover h2 {
+  transform: translateX(-10px);
+  color: var(--text-primary);
+}
+
+.card:hover p {
+  transform: translateX(8px);
+}
+
+/* === Go Live Logo (appears on hover) === */
+.goLive {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #afafaf;
+  font-weight: 500;
+  font-size: 1rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.35s ease;
+}
+
+.card:hover .goLive {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.goLiveIcon {
+  font-size: 1.3rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.card:hover .goLiveIcon {
+  transform: rotate(45deg);
+  color: #999999;
+}
+
+/* === Modal Styles === */
+.modalContainer {
+  height: 350px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+}
+
+.modalSlider {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: top 0.5s cubic-bezier(0.61, 1, 0.88, 1);
+}
+
+.modal {
+  position: relative;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal img {
+  height: auto;
+  width: 80%;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease;
+}
+
+.modal:hover img {
+  transform: scale(1.05);
+}
+
+/* === Live Link Icon Styling === */
+.liveLinkIcon {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  font-size: 2rem;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px;
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: auto;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.modal:hover .liveLinkIcon {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.4);
+}
+
+.liveLinkIcon:hover {
+  transform: scale(1.15) rotate(5deg);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+
+/* === Clickable image hover feedback === */
+.modalImageLink img {
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.modalImageLink:hover img {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+/* === Responsive Breakpoints === */
+
+/* Laptop (1024px–1439px) */
+@media (max-width: 1439px) and (min-width: 1024px) {
+  .projectCard h1 {
+    font-size: 4.5rem;
+  }
+  .card h2 {
+    font-size: 3rem;
+  }
+  .modalContainer {
+    width: 350px;
+    height: 300px;
+  }
+  .liveLinkIcon {
+    font-size: 1.8rem;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+/* Tablet (768px–1023px) */
+@media (max-width: 1023px) {
+  .projectCard {
+    width: 90vw;
+  }
+  .projectCard h1 {
+    font-size: 3.5rem;
+  }
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 30px 0;
+  }
+  .card h2 {
+    font-size: 2.2rem;
+  }
+  .cardBottom {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .card p {
+    font-size: 1rem;
+  }
+  .goLive {
+    font-size: 0.9rem;
+  }
+  .modalContainer {
+    width: 320px;
+    height: 260px;
+  }
+  .liveLinkIcon {
+    font-size: 1.6rem;
+    bottom: 18px;
+    right: 18px;
+  }
+}
+
+/* Mobile (≤767px) */
+@media (max-width: 767px) {
+  #projects {
+    align-items: center;
+  }
+  .projectCard {
+    width: 90vw;
+  }
+  .projectCard h1 {
+    font-size: 2.8rem;
+    margin-top: 15vh;
+  }
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 0;
+  }
+  .card h2 {
+    font-size: 1.8rem;
+  }
+  .cardBottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .card p {
+    font-size: 0.95rem;
+  }
+  .goLive {
+    font-size: 0.9rem;
+  }
+  .modalContainer {
+    width: 280px;
+    height: 220px;
+  }
+  .modal img {
+    width: 90%;
+  }
+  .liveLinkIcon {
+    font-size: 1.4rem;
+    bottom: 15px;
+    right: 15px;
+  }
+}
+
+/* Small Mobile (≤480px) */
+@media (max-width: 480px) {
+  .projectCard h1 {
+    font-size: 2.2rem;
+  }
+  .card h2 {
+    font-size: 1.6rem;
+  }
+  .goLive {
+    font-size: 0.85rem;
+  }
+  .modalContainer {
+    width: 240px;
+    height: 180px;
+  }
+  .liveLinkIcon {
+    font-size: 1.2rem;
+    bottom: 12px;
+    right: 12px;
+  }
+}

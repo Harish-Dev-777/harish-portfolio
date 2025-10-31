@@ -1,0 +1,265 @@
+#contact {
+  background: #0c0c0e;
+  color: #fff;
+  padding: 12vh 10vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+/* === Container Layout === */
+.contact-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 6rem;
+  flex-wrap: wrap;
+  margin-top: 30vh;
+}
+
+/* === Left Section === */
+.contact-left {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.contact-title {
+  font-size: clamp(3rem, 8vw, 8rem);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  background: linear-gradient(to bottom, #ffffff, #9c9c9c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: left;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.contact-details p {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #d2d2d2;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contact-details p:hover {
+  color: #9d9d9d;
+  transform: translateX(6px);
+}
+
+/* === Right Section (Social Links) === */
+.contact-right {
+  flex: 0.8;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.contact-right ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.contact-right li {
+  font-size: 3rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #e5e5e5;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.contact-right li::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #9d9d9d;
+  transition: width 0.3s ease;
+}
+
+.contact-right li:hover {
+  color: #9d9d9d;
+}
+
+.contact-right li:hover::after {
+  width: 100%;
+}
+
+/* === Google Map (Centered & 80% Width) === */
+.contact-map {
+  position: relative;
+  margin: 10vh auto 0 auto;
+  width: 80%;
+  height: 320px;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.6s ease;
+}
+
+.contact-map:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 45px rgba(0, 183, 255, 0.25);
+  border-color: rgba(0, 183, 255, 0.3);
+}
+
+/* === Map Overlay === */
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgba(0, 183, 255, 0.1),
+    rgba(255, 255, 255, 0.03)
+  );
+  mix-blend-mode: overlay;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* === Neon Glow Border === */
+.map-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.2rem;
+  border: 2px solid transparent;
+  background: linear-gradient(120deg, #00bfff, #7f00ff, #00bfff) border-box;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  animation: glow-rotate 6s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* === Glow Animation === */
+@keyframes glow-rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* === Particles Behind Map === */
+.contact-map::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(
+      circle at 20% 30%,
+      rgba(0, 183, 255, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(255, 255, 255, 0.08),
+      transparent 60%
+    );
+  z-index: 0;
+  animation: floatParticles 10s ease-in-out infinite alternate;
+}
+
+@keyframes floatParticles {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  100% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+/* === Map Iframe === */
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  filter: grayscale(100%) brightness(0.9) contrast(1.1);
+  transition: filter 0.5s ease;
+  z-index: 1;
+}
+
+.contact-map:hover iframe {
+  filter: grayscale(40%) brightness(1) contrast(1.1);
+}
+
+/* === Responsive === */
+@media (max-width: 1024px) {
+  .contact-container {
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .contact-right {
+    justify-content: flex-start;
+  }
+
+  .contact-map {
+    width: 90%;
+    height: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-title {
+    font-size: 3rem;
+  }
+
+  .contact-details p {
+    font-size: 1.6rem;
+  }
+
+  .contact-right li {
+    font-size: 1.4rem;
+  }
+
+  .contact-map {
+    width: 100%;
+    height: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  #contact {
+    padding: 8vh 6vw;
+  }
+
+  .contact-title {
+    font-size: 2.5rem;
+  }
+
+  .contact-details p {
+    font-size: 1.4rem;
+  }
+
+  .contact-right li {
+    font-size: 1.2rem;
+  }
+
+  .contact-map {
+    height: 180px;
+  }
+}

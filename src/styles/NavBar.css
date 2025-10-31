@@ -1,0 +1,147 @@
+/* === Menu Button === */
+.button {
+  position: fixed;
+  right: 0;
+  margin: 20px;
+  width: 80px;
+  height: 80px;
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 51;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+}
+
+.button:hover {
+  scale: 1.05;
+  background-color: var(--color-tertiary-bg);
+}
+
+/* === Burger Lines === */
+.burger {
+  position: relative;
+  width: 35px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.4s ease-in-out;
+}
+
+.burger::before {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  top: 8px;
+  left: 0;
+  transition: all 0.4s ease-in-out;
+}
+
+/* === Burger Active (X Icon) === */
+.burgerActive {
+  transform: rotate(45deg);
+  background: var(--text-primary);
+}
+
+.burgerActive::before {
+  transform: rotate(-90deg);
+  top: 0;
+}
+
+/* === Menu Container === */
+.menu {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  background: var(--color-secondary-bg);
+  color: var(--text-primary);
+  z-index: 50;
+  border: none;
+  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* === Menu Body === */
+.body {
+  padding: 20px 100px 0 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* === Navigation Content === */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 80px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.header p {
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border-color);
+  padding: 5px;
+  margin-bottom: 30px;
+  color: var(--text-muted);
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-link a {
+  position: relative;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 50px;
+  transition: color 0.3s ease;
+}
+
+.nav-link a::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--text-primary);
+  transition: width 0.3s ease;
+}
+
+.nav-link a:hover::after {
+  width: 100%;
+}
+
+/* === Active Link === */
+.nav-link a.active {
+  color: var(--text-muted);
+}
+
+.nav-link a.active::after {
+  width: 100%;
+  background: var(--text-muted);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .body {
+    padding: 20px 40px;
+  }
+
+  .nav-link a {
+    font-size: 36px;
+  }
+}
