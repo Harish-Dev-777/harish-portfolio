@@ -1,63 +1,77 @@
+/* =========================
+   Global / Optimized Index CSS
+   Keep design + animations intact
+   ========================= */
+
+/* ---------- Imports ----------
+   Keep Tailwind + locomitive + any animation helper CSS.
+   Consider moving Google font <link rel="preconnect"> and <link href=...> to your <head>
+   for better loading control (preconnect + rel=stylesheet with display=swap).
+*/
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Oxanium:wght@200..800&display=swap");
 @import "tw-animate-css";
 @import "locomotive-scroll/dist/locomotive-scroll.css";
 
-@custom-variant dark (&:is(.dark *));
+/* If you must keep in-CSS import for Google Fonts, keep display=swap for performance */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Oxanium:wght@200..800&display=swap");
 
-:root {
-  /* === Backgrounds === */
+/* ---------- Core box model & accessibility ----------
+   box-sizing + consistent defaults reduce layout surprises and expensive reflows.
+*/
+:root{
+  /* Color tokens (kept as you had them; used throughout site) */
   --color-primary-bg: #202028;
   --color-secondary-bg: #18181b;
   --color-tertiary-bg: #4a4a4c;
 
-  /* === Text === */
   --text-primary: #fafafa;
   --text-secondary: #e4e4e7;
   --text-muted: #a1a1aa;
 
-  /* === UI Elements === */
   --border-color: #e4e4e7;
   --card-bg: #18181b;
-  
 }
 
-/* base styes */
-
-html,
-body {
+/* Use border-box everywhere to stabilize width calculations */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* ---------- Document-level styles ----------
+   Minimal, non-redundant properties only.
+*/
+html, body {
+  height: 100%;
   background-color: var(--color-primary-bg);
-  color: var(--text-secondary);
-  font-family: "Inter", system-ui, sans-serif;
+  color: var(--text-secondary); /* body text */
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
-  color: #fafafa;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   overflow-x: hidden;
   overflow-y: auto;
+  /* avoid forcing scrollbar repaint in some browsers; prefer hiding only if necessary */
   scrollbar-width: none;
-  height: auto;
 }
 
+/* Optional: keep hiding webkit scrollbar if you prefer the clean look */
 body::-webkit-scrollbar {
   display: none;
 }
 
-
-/* === Headings === */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Space Grotesk", sans-serif;
+/* ---------- Headings & text ----------
+   Space Grotesk for headings (keeps your typographic feel).
+*/
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   color: var(--text-primary);
   letter-spacing: -0.02em;
   line-height: 1.2;
+  font-weight: 600;
+  /* avoid heavy text-shadow / paint-costly properties globally */
 }
 
 p {
@@ -67,63 +81,32 @@ p {
   font-size: 1rem;
 }
 
-/* === Links === */
-a {
-  color: var(--color-primary-bg);
-  text-decoration: none;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-a:hover {
+/* subtitle utility (keeps same look) */
+.subTitle {
+  font-size: 1.4em;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 300;
+  font-style: italic;
   color: var(--text-muted);
 }
 
-.subTitle {
-  font-size: 1.4em;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-weight: 300;
-  font-style: italic;
+/* ---------- Links ----------
+   Keep simple transitions that don't force layout changes.
+*/
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 200ms ease, text-shadow 200ms ease;
 }
 
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+a:hover, a:focus {
+  color: var(--text-muted);
+  outline: none;
 }
 
+/* ---------- Theme variables (dark class) ----------
+   Keep your oklch theme tokens - unchanged except for grouping & comment.
+*/
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -158,11 +141,45 @@ a:hover {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ---------- Tailwind base layer compatibility ----------
+   Avoid heavy universal rules inside @layer where possible.
+*/
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  /* Avoid applying heavy properties to * globally — keep minimal. */
+  :root { /* Keep border/ring tokens available for Tailwind components */
+    --radius: 8px;
   }
+
+  /* Base body colors via CSS variables (Tailwind will pick these up) */
   body {
-    @apply bg-background text-foreground;
+    background: var(--background, var(--color-primary-bg));
+    color: var(--foreground, var(--text-secondary));
   }
 }
+
+/* ---------- Accessibility & Reduced Motion ----------
+   Respect users who prefer reduced motion — this improves perceived perf.
+*/
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Performance tips (non-CSS, for your workflow) ----------
+   - Prefer transform/opacity for animations (GSAP default is fine).
+   - Avoid heavy paint properties (box-shadow/text-shadow) on many elements at once.
+   - Only apply will-change to elements that actually need it, and remove it after animation.
+   - Avoid extremely deep/complex selectors; prefer utility classes (Tailwind) for repetitive rules.
+*/
+
+/* ---------- Small helpers (optional) ----------
+   Use these rather than broad universal selectors in components.
+*/
+.u-hidden-scrollbar {
+  scrollbar-width: none;
+}
+.u-hidden-scrollbar::-webkit-scrollbar { display: none; }

@@ -38,7 +38,7 @@
 
 /* === Buttons === */
 .btns {
-  top: 45vh;
+  top: 52vh;
   left: 42px;
   position: absolute;
   display: flex;
@@ -234,7 +234,7 @@
 
   .btns {
     position: relative;
-    top: 40px;
+    top: 150px;
     left: 0;
     width: 100%;
     flex-direction: column;

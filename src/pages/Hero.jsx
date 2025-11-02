@@ -1,82 +1,102 @@
-import React, { useRef } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import "../styles/Hero.css";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { SplitText } from "gsap/all";
+import { SplitText, ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(SplitText, ScrollTrigger);
 
 const Hero = () => {
   const firstText = useRef(null);
   const secondText = useRef(null);
   const slider = useRef(null);
-  let xPercent = 0;
-  let direction = -1;
+  const ctx = useRef(null);
+  const direction = useRef(-1);
+  const xPercent = useRef(0);
+  const animFrame = useRef(null);
 
-  useGSAP(() => {
-    requestAnimationFrame(animation);
-    const heroSplit = new SplitText("#heading", { type: "chars,words" });
-    const subheadingSplit = new SplitText(".subTitle", { type: "lines" });
+  // GSAP Animations
+  useLayoutEffect(() => {
+    ctx.current = gsap.context(() => {
+      const heading = document.querySelector("#heading");
+      const sub = document.querySelector(".subTitle");
 
-    gsap.from(heroSplit.chars, {
-      opacity: 0,
-      yPercent: 100,
-      duration: 1.8,
-      ease: "expo.out",
-      stagger: 0.06,
+      const heroSplit = new SplitText(heading, { type: "chars,words" });
+      const subheadingSplit = new SplitText(sub, { type: "lines" });
+
+      // --- Entry animations ---
+      gsap.from(heroSplit.chars, {
+        opacity: 0,
+        yPercent: 100,
+        duration: 1.8,
+        ease: "expo.out",
+        stagger: 0.06,
+      });
+
+      gsap.from(subheadingSplit.lines, {
+        opacity: 0,
+        yPercent: 100,
+        duration: 1.8,
+        ease: "expo.out",
+        stagger: 0.06,
+        delay: 1.2,
+      });
+
+      gsap.from("#heading", {
+        y: 200,
+        duration: 1,
+        opacity: 0,
+        ease: "power1.out",
+      });
+
+      // --- Scroll direction animation ---
+      gsap.to(slider.current, {
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: 0,
+          end: window.innerHeight,
+          scrub: 0.1,
+          onUpdate: (e) => (direction.current = e.direction * -1),
+        },
+        ease: "power1.inOut",
+        x: "-=300px",
+      });
     });
 
-    gsap.from(subheadingSplit.lines, {
-      opacity: 0,
-      yPercent: 100,
-      duration: 1.8,
-      ease: "expo.out",
-      stagger: 0.06,
-      delay: 1.2,
-    });
+    const animateSlider = () => {
+      if (!firstText.current || !secondText.current) return;
 
-    gsap.to(slider.current, {
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: 0,
-        end: window.innerHeight,
-        scrub: 0.1,
-        onUpdate: (e) => (direction = e.direction * -1),
-      },
-      ease: "power1.inOut",
-      x: "-=300px",
-    });
+      if (xPercent.current <= -100) xPercent.current = 0;
+      if (xPercent.current > 0) xPercent.current = -100;
 
-    gsap.from("#heading", {
-      y: 200,
-      duration: 1,
-      opacity: 0,
-      ease: "power1.out",
-    });
+      gsap.set(firstText.current, { xPercent: xPercent.current });
+      gsap.set(secondText.current, { xPercent: xPercent.current });
+
+      xPercent.current += 0.1 * direction.current;
+      animFrame.current = requestAnimationFrame(animateSlider);
+    };
+
+    animFrame.current = requestAnimationFrame(animateSlider);
+
+    // 🧹 Cleanup
+    return () => {
+      if (animFrame.current) cancelAnimationFrame(animFrame.current);
+      ctx.current?.revert();
+    };
   }, []);
 
-  const animation = () => {
-    if (xPercent <= -100) xPercent = 0;
-    if (xPercent > 0) xPercent = -100;
-    gsap.set(firstText.current, { xPercent });
-    gsap.set(secondText.current, { xPercent });
-    xPercent += 0.1 * direction;
-    requestAnimationFrame(animation);
-  };
-
-  // Smooth scroll handler
+  // Smooth scroll handler (unchanged)
   const scrollToSection = (id) => {
     const section = document.querySelector(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    if (section) section.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div id="home">
+    <section id="home" className="heroSection">
       <h1 id="heading" className="heroTitle">
         I'm Harish.
       </h1>
 
-      <h2 id="subHeading" className="subTitle">
+      <h2 className="subTitle">
         Designing modern digital experiences that connect, perform, and inspire.
       </h2>
 
@@ -132,7 +152,7 @@ const Hero = () => {
       <div className="robotModel">
         <spline-viewer url="https://prod.spline.design/dJp7whPNR-mnCs68/scene.splinecode"></spline-viewer>
       </div>
-    </div>
+    </section>
   );
 };
 
