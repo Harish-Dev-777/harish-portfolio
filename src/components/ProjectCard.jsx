@@ -2,19 +2,20 @@ import "../styles/Projects.css";
 import { FiExternalLink } from "react-icons/fi";
 
 const ProjectCard = ({ index, title, setModal, live }) => {
+  const handleMouseEnter = () => setModal({ active: true, index });
+  const handleMouseLeave = () => setModal({ active: false, index });
+  const handleClick = () => {
+    if (live) window.open(live, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div
       className="card"
-      onMouseEnter={() => setModal({ active: true, index })}
-      onMouseLeave={() => setModal({ active: false, index })}
-      onClick={() => {
-        if (live) {
-          window.open(live, "_blank", "noopener,noreferrer");
-        }
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       <h2>{title}</h2>
-
       <div className="cardBottom">
         <p>Design & Development</p>
 

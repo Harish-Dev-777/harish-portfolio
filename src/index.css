@@ -1,24 +1,12 @@
-/* =========================
-   Global / Optimized Index CSS
-   Keep design + animations intact
-   ========================= */
 
-/* ---------- Imports ----------
-   Keep Tailwind + locomitive + any animation helper CSS.
-   Consider moving Google font <link rel="preconnect"> and <link href=...> to your <head>
-   for better loading control (preconnect + rel=stylesheet with display=swap).
-*/
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "locomotive-scroll/dist/locomotive-scroll.css";
 
-/* If you must keep in-CSS import for Google Fonts, keep display=swap for performance */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Oxanium:wght@200..800&display=swap");
 
-/* ---------- Core box model & accessibility ----------
-   box-sizing + consistent defaults reduce layout surprises and expensive reflows.
-*/
-:root{
+/* ---------- Core box model & accessibility ----------*/
+:root {
   /* Color tokens (kept as you had them; used throughout site) */
   --color-primary-bg: #202028;
   --color-secondary-bg: #18181b;
@@ -33,7 +21,9 @@
 }
 
 /* Use border-box everywhere to stabilize width calculations */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -42,11 +32,13 @@
 /* ---------- Document-level styles ----------
    Minimal, non-redundant properties only.
 */
-html, body {
+html,
+body {
   height: 100%;
   background-color: var(--color-primary-bg);
   color: var(--text-secondary); /* body text */
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -62,11 +54,28 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+@theme inline {
+  --animate-scroll: scroll var(--animation-duration, 40s)
+    var(--animation-direction, forwards) linear infinite;
+
+  @keyframes scroll {
+    to {
+      transform: translate(calc(-50% - 0.5rem));
+    }
+  }
+}
+
 /* ---------- Headings & text ----------
    Space Grotesk for headings (keeps your typographic feel).
 */
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", sans-serif;
   color: var(--text-primary);
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -84,7 +93,8 @@ p {
 /* subtitle utility (keeps same look) */
 .subTitle {
   font-size: 1.4em;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 300;
   font-style: italic;
   color: var(--text-muted);
@@ -99,7 +109,8 @@ a {
   transition: color 200ms ease, text-shadow 200ms ease;
 }
 
-a:hover, a:focus {
+a:hover,
+a:focus {
   color: var(--text-muted);
   outline: none;
 }
@@ -146,7 +157,8 @@ a:hover, a:focus {
 */
 @layer base {
   /* Avoid applying heavy properties to * globally — keep minimal. */
-  :root { /* Keep border/ring tokens available for Tailwind components */
+  :root {
+    /* Keep border/ring tokens available for Tailwind components */
     --radius: 8px;
   }
 
@@ -182,4 +194,6 @@ a:hover, a:focus {
 .u-hidden-scrollbar {
   scrollbar-width: none;
 }
-.u-hidden-scrollbar::-webkit-scrollbar { display: none; }
+.u-hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}

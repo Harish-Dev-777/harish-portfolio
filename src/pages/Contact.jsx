@@ -1,123 +1,59 @@
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import "../styles/Contact.css";
-import { contactData } from "../constants/data";
-
-gsap.registerPlugin(ScrollTrigger);
+import { contactData, socialLinks } from "../constants/data";
 
 const Contact = () => {
-  const contactRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: contactRef.current,
-          start: "top 85%", // triggers as soon as title enters
-          toggleActions: "play none none reverse",
-          once: true,
-        },
-      });
-
-      // All main elements animate together
-      tl.fromTo(
-        [
-          ".contact-title",
-          ".contact-details p",
-          ".social-link",
-          ".contact-map",
-        ],
-        {
-          y: 80,
-          opacity: 0,
-          rotateX: -15,
-          filter: "blur(10px)",
-        },
-        {
-          y: 0,
-          opacity: 1,
-          rotateX: 0,
-          filter: "blur(0px)",
-          duration: 1.4,
-          ease: "power4.out",
-          stagger: {
-            each: 0.08,
-            from: "start",
-          },
-        }
-      );
-
-      // Soft breathing neon glow effect
-      gsap.to(".map-glow", {
-        opacity: 0.8,
-        scale: 1.1,
-        repeat: -1,
-        yoyo: true,
-        duration: 3,
-        ease: "sine.inOut",
-      });
-
-      // Subtle floating parallax for the map background
-      gsap.to(".contact-map", {
-        y: -20,
-        scrollTrigger: {
-          trigger: ".contact-map",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        },
-        ease: "none",
-      });
-    }, contactRef);
-
-    return () => ctx.revert();
-  }, []);
+  // Use a key to force iframe reload on small devices
+  const mapKey = `${contactData.location}-${window.innerWidth < 768 ? "mobile" : "desktop"}`;
 
   return (
-    <section id="contact" ref={contactRef}>
+    <section id="contact">
       <div className="contact-container">
+        {/* === Left Section === */}
         <div className="contact-left">
           <h1 className="contact-title">Let’s Connect</h1>
 
           <div className="contact-details">
             <p
-              onClick={() =>
-                (window.location.href = `mailto:${contactData.email}`)
-              }
+              onClick={() => (window.location.href = `mailto:${contactData.email}`)}
+              className="contact-item"
             >
               {contactData.email}
             </p>
             <p
-              onClick={() =>
-                (window.location.href = `tel:${contactData.phone}`)
-              }
+              onClick={() => (window.location.href = `tel:${contactData.phone}`)}
+              className="contact-item"
             >
               {contactData.phone}
             </p>
           </div>
+
+          {/* === Google Map with better mobile fallback === */}
           <div className="contact-map">
-            <div className="map-overlay"></div>
-            <div className="map-glow"></div>
             <iframe
+              key={mapKey}
               title="Location Map"
               src={`https://www.google.com/maps?q=${encodeURIComponent(
                 contactData.location
               )}&output=embed`}
               loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              onLoad={(e) => e.target.classList.add("map-loaded")}
             ></iframe>
+            <div className="map-fallback">Loading map...</div>
           </div>
         </div>
 
+        {/* === Right Section === */}
         <div className="contact-right">
           <ul>
-            {contactData.socials.map((social, index) => (
-              <li
-                key={index}
-                className="social-link"
-                onClick={() => window.open(social.url, "_blank")}
-              >
-                {social.name}
+            {socialLinks.map((social, index) => (
+              <li key={index} className="social-link">
+                <NavLink to={social.url} target="_blank" rel="noopener noreferrer">
+                  {social.name}
+                </NavLink>
               </li>
             ))}
           </ul>

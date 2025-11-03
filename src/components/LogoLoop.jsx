@@ -1,4 +1,12 @@
-import { useEffect, useMemo, useRef, useState, useCallback, memo } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+  useLayoutEffect,
+  memo,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // === CONFIG ===
@@ -9,30 +17,32 @@ const CONFIG = {
 };
 
 // === HELPERS ===
-const toCssLength = (value) =>
-  typeof value === "number" ? `${value}px` : value ?? undefined;
-
-const cx = (...parts) => parts.filter(Boolean).join(" ");
+const toCssLength = (v) => (typeof v === "number" ? `${v}px` : v ?? undefined);
+const cx = (...p) => p.filter(Boolean).join(" ");
 
 // === HOOKS ===
-const useResizeObserver = (callback, elements, deps) => {
-  useEffect(() => {
+const useResizeObserver = (cb, elements, deps) => {
+  useLayoutEffect(() => {
+    if (!elements?.length) return;
+
     if (!window.ResizeObserver) {
-      const resizeHandler = () => callback();
-      window.addEventListener("resize", resizeHandler);
-      callback();
-      return () => window.removeEventListener("resize", resizeHandler);
+      const onResize = () => cb();
+      window.addEventListener("resize", onResize);
+      cb();
+      return () => window.removeEventListener("resize", onResize);
     }
 
-    const observers = elements.map((ref) => {
-      if (!ref.current) return null;
-      const obs = new ResizeObserver(callback);
-      obs.observe(ref.current);
-      return obs;
-    });
+    const obsList = elements
+      .map((r) => {
+        if (!r.current) return null;
+        const obs = new ResizeObserver(cb);
+        obs.observe(r.current);
+        return obs;
+      })
+      .filter(Boolean);
 
-    callback();
-    return () => observers.forEach((obs) => obs?.disconnect());
+    cb();
+    return () => obsList.forEach((o) => o.disconnect());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 };
@@ -45,24 +55,24 @@ const useImageLoader = (seqRef, onLoad, deps) => {
       return;
     }
 
-    let remaining = imgs.length;
-    const handleLoad = () => {
-      remaining -= 1;
-      if (remaining === 0) onLoad();
+    let remain = imgs.length;
+    const done = () => {
+      remain -= 1;
+      if (remain === 0) onLoad();
     };
 
     imgs.forEach((img) => {
-      if (img.complete) handleLoad();
+      if (img.complete) done();
       else {
-        img.addEventListener("load", handleLoad, { once: true });
-        img.addEventListener("error", handleLoad, { once: true });
+        img.addEventListener("load", done, { once: true });
+        img.addEventListener("error", done, { once: true });
       }
     });
 
     return () =>
       imgs.forEach((img) => {
-        img.removeEventListener("load", handleLoad);
-        img.removeEventListener("error", handleLoad);
+        img.removeEventListener("load", done);
+        img.removeEventListener("error", done);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
@@ -75,51 +85,45 @@ const useAnimationLoop = (
   isHovered,
   pauseOnHover
 ) => {
-  const rafRef = useRef(null);
-  const lastTimeRef = useRef(null);
-  const offsetRef = useRef(0);
-  const velocityRef = useRef(0);
+  const raf = useRef();
+  const last = useRef(null);
+  const offset = useRef(0);
+  const velocity = useRef(0);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
     const prefersReduced =
-      typeof window !== "undefined" &&
+      window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (seqWidth > 0) {
-      offsetRef.current =
-        ((offsetRef.current % seqWidth) + seqWidth) % seqWidth;
-      track.style.transform = `translate3d(${-offsetRef.current}px,0,0)`;
-    }
 
     if (prefersReduced) {
       track.style.transform = "translate3d(0,0,0)";
-      return () => (lastTimeRef.current = null);
+      return;
     }
 
     const animate = (t) => {
-      if (lastTimeRef.current === null) lastTimeRef.current = t;
-      const dt = (t - lastTimeRef.current) / 1000;
-      lastTimeRef.current = t;
+      if (last.current == null) last.current = t;
+      const dt = (t - last.current) / 1000;
+      last.current = t;
 
       const target = pauseOnHover && isHovered ? 0 : targetVelocity;
       const factor = 1 - Math.exp(-dt / CONFIG.SMOOTH_TAU);
-      velocityRef.current += (target - velocityRef.current) * factor;
+      velocity.current += (target - velocity.current) * factor;
 
-      if (seqWidth > 0) {
-        let nextOffset = offsetRef.current + velocityRef.current * dt;
-        nextOffset = ((nextOffset % seqWidth) + seqWidth) % seqWidth;
-        offsetRef.current = nextOffset;
-        track.style.transform = `translate3d(${-offsetRef.current}px,0,0)`;
+      if (seqWidth > 0 && Math.abs(velocity.current) > 0.01) {
+        offset.current =
+          (((offset.current + velocity.current * dt) % seqWidth) + seqWidth) %
+          seqWidth;
+        track.style.transform = `translate3d(${-offset.current}px,0,0)`;
       }
 
-      rafRef.current = requestAnimationFrame(animate);
+      raf.current = requestAnimationFrame(animate);
     };
 
-    rafRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafRef.current);
+    raf.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf.current);
   }, [targetVelocity, seqWidth, isHovered, pauseOnHover]);
 };
 
@@ -150,8 +154,7 @@ export const LogoLoop = memo(
     const targetVelocity = useMemo(() => {
       const mag = Math.abs(speed);
       const dir = direction === "left" ? 1 : -1;
-      const mul = speed < 0 ? -1 : 1;
-      return mag * dir * mul;
+      return mag * dir;
     }, [speed, direction]);
 
     const updateDimensions = useCallback(() => {
@@ -182,28 +185,28 @@ export const LogoLoop = memo(
       [gap, logoHeight]
     );
 
+    // renderLogo is memoized; hover tooltips handled efficiently
     const renderLogo = useCallback(
       (item, key, idx) => (
         <li
           key={key}
-          className="flex-none mr-[calc(var(--gap)+10px)] relative text-[length:var(--logoHeight)] leading-[1]"
+          className="flex-none relative text-[length:var(--logoHeight)] leading-[1] mx-[calc(var(--gap)/2)]"
         >
           <div
             className="relative inline-flex items-center justify-center cursor-pointer group"
-            onMouseEnter={() => setHoveredIndex(idx)}
-            onMouseLeave={() => setHoveredIndex(null)}
+            onPointerEnter={() => setHoveredIndex(idx)}
+            onPointerLeave={() => setHoveredIndex(null)}
           >
-            {/* === Tooltip Popup === */}
             <AnimatePresence>
               {hoveredIndex === idx && (
                 <motion.div
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: -20, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
                   style={{
-                    backgroundColor: item.color || "#ffffff",
-                    color: item.color === "#ffffff" ? "#000" : "#fff",
+                    backgroundColor: item.color || "#fff",
+                    color: item.color === "#fff" ? "#000" : "#fff",
                   }}
                   className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-md shadow-md text-xs font-semibold whitespace-nowrap z-50"
                 >
@@ -212,7 +215,6 @@ export const LogoLoop = memo(
               )}
             </AnimatePresence>
 
-            {/* === Logo (supports react-icons or img) === */}
             <div
               className={cx(
                 "transition-transform duration-300 ease-out",
@@ -257,14 +259,14 @@ export const LogoLoop = memo(
         ref={containerRef}
         className={cx("relative overflow-hidden", className)}
         style={{ width: toCssLength(width), ...cssVars, ...style }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onPointerEnter={() => setIsHovered(true)}
+        onPointerLeave={() => setIsHovered(false)}
         role="region"
         aria-label={ariaLabel}
       >
         <div
-          className="flex w-max will-change-transform select-none items-center"
           ref={trackRef}
+          className="flex w-max will-change-transform select-none items-center"
         >
           {logoList}
         </div>

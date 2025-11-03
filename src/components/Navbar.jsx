@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/NavBar.css";
 import { AnimatePresence, motion } from "framer-motion";
+import { navItems, socialLinks } from "../constants/data"; // ✅ imported
 
 const Navbar = () => {
   const [isActive, setActive] = useState(false);
@@ -11,7 +12,7 @@ const Navbar = () => {
         <div className={`burger ${isActive ? "burgerActive" : ""}`}></div>
       </div>
       <AnimatePresence mode="wait">
-        {isActive && <Nav setActive={setActive} />} {/* ✅ pass setActive */}
+        {isActive && <Nav setActive={setActive} />}
       </AnimatePresence>
     </>
   );
@@ -19,6 +20,7 @@ const Navbar = () => {
 
 export default Navbar;
 
+// === Motion Variants ===
 const menuSlide = {
   initial: { x: "calc(100% + 100px)" },
   enter: {
@@ -53,6 +55,7 @@ const slide = {
   }),
 };
 
+// === NavLinks ===
 const NavLinks = ({ item, index, activeLink, handleClick }) => (
   <motion.div
     variants={slide}
@@ -63,33 +66,23 @@ const NavLinks = ({ item, index, activeLink, handleClick }) => (
     className="nav-link"
   >
     <a
-      href={item.href}
-      onClick={() => handleClick(item.href)}
-      className={activeLink === item.href ? "active" : ""}
+      href={item.path}
+      onClick={() => handleClick(item.path)}
+      className={activeLink === item.path ? "active" : ""}
     >
-      {item.title}
+      {item.name}
     </a>
   </motion.div>
 );
 
+// === Nav Menu ===
 const Nav = ({ setActive }) => {
-  {
-    /* ✅ accept setActive */
-  }
-  const navItems = [
-    { title: "Home", href: "#home" },
-    { title: "About", href: "#about" },
-    { title: "Projects", href: "#projects" },
-    { title: "Services", href: "#services" },
-    { title: "Contact", href: "#contact" },
-  ];
-
   const [activeLink, setActiveLink] = useState(window.location.hash || "#home");
 
   const handleClick = (href) => {
     setActiveLink(href);
     window.location.hash = href;
-    setActive(false); // ✅ close the menu after click
+    setActive(false);
   };
 
   useEffect(() => {

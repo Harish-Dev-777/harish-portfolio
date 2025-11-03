@@ -70,8 +70,8 @@ const Hero = () => {
 
       gsap.set(firstText.current, { xPercent: xPercent.current });
       gsap.set(secondText.current, { xPercent: xPercent.current });
-
-      xPercent.current += 0.1 * direction.current;
+   
+      xPercent.current += 0.25 * direction.current;
       animFrame.current = requestAnimationFrame(animateSlider);
     };
 

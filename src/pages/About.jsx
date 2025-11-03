@@ -50,7 +50,7 @@ const About = () => {
           scrollTrigger: {
             trigger: q,
             start: "top 90%",
-            end: "bottom top",
+            end: "bottom 50%",
             scrub: true,
           },
         }
@@ -84,15 +84,39 @@ I specialize in crafting both the front-end elegance and the back-end strength t
   const techLogos = [
     { node: <SiHtml5 color="#E34F26" />, title: "HTML", color: "#E34F26" },
     { node: <SiCss3 color="#1572B6" />, title: "CSS", color: "#1572B6" },
-    { node: <SiJavascript color="#F7DF1E" />, title: "JavaScript", color: "#F7DF1E" },
+    {
+      node: <SiJavascript color="#F7DF1E" />,
+      title: "JavaScript",
+      color: "#F7DF1E",
+    },
     { node: <SiReact color="#61DBFB" />, title: "React", color: "#61DBFB" },
-    { node: <SiNextdotjs color="#ffffff" />, title: "Next.js", color: "#ffffff" },
-    { node: <SiTypescript color="#3178C6" />, title: "TypeScript", color: "#3178C6" },
-    { node: <SiTailwindcss color="#38BDF8" />, title: "Tailwind CSS", color: "#38BDF8" },
-    { node: <SiSpringboot color="#6DB33F" />, title: "Spring Boot", color: "#6DB33F" },
+    {
+      node: <SiNextdotjs color="#ffffff" />,
+      title: "Next.js",
+      color: "#ffffff",
+    },
+    {
+      node: <SiTypescript color="#3178C6" />,
+      title: "TypeScript",
+      color: "#3178C6",
+    },
+    {
+      node: <SiTailwindcss color="#38BDF8" />,
+      title: "Tailwind CSS",
+      color: "#38BDF8",
+    },
+    {
+      node: <SiSpringboot color="#6DB33F" />,
+      title: "Spring Boot",
+      color: "#6DB33F",
+    },
     { node: <SiMongodb color="#47A248" />, title: "MongoDB", color: "#47A248" },
     { node: <SiMysql color="#00758F" />, title: "MySQL", color: "#00758F" },
-    { node: <SiFramer color="#e9e9e9" />, title: "Framer Motion", color: "#e9e9e9" },
+    {
+      node: <SiFramer color="#e9e9e9" />,
+      title: "Framer Motion",
+      color: "#e9e9e9",
+    },
   ];
 
   return (
@@ -120,9 +144,9 @@ I specialize in crafting both the front-end elegance and the back-end strength t
           logos={techLogos}
           speed={100}
           direction="left"
-          logoHeight={90}
+          logoHeight={130}
           gap={70}
-          pauseOnHover
+          pauseOnHove
           scaleOnHover
           fadeOut
           fadeOutColor="#131318"
@@ -131,7 +155,7 @@ I specialize in crafting both the front-end elegance and the back-end strength t
 
       <div className="about-quote-container">
         <h1 ref={quoteRef} className="about-quote">
-          Every pixel and line of code has purpose —{" "}
+          Every pixel and line of code has purpose -{" "}
           <span>I don’t just build websites</span>, I craft experiences.
         </h1>
       </div>

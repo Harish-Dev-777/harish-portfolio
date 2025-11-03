@@ -1,232 +1,226 @@
-/* === Root Section === */
-#services {
-  background: #131318;
-  color: white;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* === Horizontal Scroll === */
-.horizontal-scroll-section {
-  position: relative;
-  height: 100vh;
+/* === BASE WRAPPER === */
+.services-wrapper {
   width: 100%;
+  color: #fff;
   overflow: hidden;
+  background: #0d0d11;
 }
 
-.horizontal-scroll-container {
-  display: flex;
-  height: 100%;
-  width: max-content;
-  scroll-behavior: smooth;
-  transition: transform 0.5s ease-in-out;
-}
-
-.service-panel {
-  min-width: 100vw;
+/* === INTRO SECTION === */
+.intro-section {
+  width: 100%;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* === Intro Section === */
-.ServiceIntroSection {
-  position: relative;
-  overflow: hidden;
   background: #131318;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .service-title {
-  background-image: linear-gradient(to bottom, #ffffff, #9f9f9f);
-  background-clip: text;
+  font-size: 10vw;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(to bottom, #ffffff, #999);
   -webkit-background-clip: text;
   color: transparent;
-  letter-spacing: -2px;
-  font-weight: 700;
-  line-height: 1.1;
-  text-transform: uppercase;
+  text-align: center;
 }
 
-/* === ID Badge === */
-.id-badge {
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: #fff;
+.scroll-down {
+  position: absolute;
+  bottom: 40px;
+  text-align: center;
+  color: #ccc;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
 }
 
-/* === Service Card === */
-.service-card {
-  backdrop-filter: blur(20px);
-  background: rgba(20, 20, 25, 0.6);
-  transition: all 0.6s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #2a2a2e;
-  box-shadow: 0 0 50px rgba(255, 255, 255, 0.05);
-  overflow: hidden;
-}
-
-.service-card:hover {
-  transform: scale(1.03);
-  border-color: #3a3a3f;
-  box-shadow: 0 0 70px rgba(255, 255, 255, 0.08);
-}
-
-/* === Text Content Inside Cards === */
-.service-card h2 {
-  font-size: 3rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
-}
-
-.service-card p {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #b5b5b5;
-  max-width: 700px;
-  margin: 0 auto;
+.arrow-icon {
+  margin-top: 10px;
+  margin-left: 34px;
+  cursor: pointer;
+  color: #ccc;
   transition: color 0.3s ease;
 }
 
-.service-card p:hover {
-  color: #e6e6e6;
+.arrow-icon:hover {
+  color: #fff;
 }
 
-.service-card span {
-  transition: all 0.3s ease;
+/* === SERVICES GRID === */
+.services-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 4rem;
+  width: 100%;
+  margin: 20vh 0px 20vh 0px;
+  padding: clamp(2rem, 5vw, 6rem);
+  justify-items: center;
+  background: radial-gradient(circle at top left, #0a0a0f, #111);
 }
 
-.service-card span:hover {
-  background: #2f2f36;
-  transform: scale(1.05);
-}
-
-/* === Final Card === */
-.final-card-section {
-  background: #0d0d11;
+/* === SERVICE CARD === */
+.service-card {
   position: relative;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 1s ease;
-}
-
-/* === Get In Touch Section === */
-.getInTouch {
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(180deg, #0b0b0d, #131318);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: relative;
+  width: 100%;
+  max-width: 420px;
+  min-height: 520px; /* reduced slightly */
+  border-radius: 25px;
+  border: 1px solid rgba(90, 90, 110, 0.25);
+  background: rgba(20, 20, 30, 0.7);
+  backdrop-filter: blur(25px);
+  text-align: center;
   overflow: hidden;
-  perspective: 1000px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease, background 0.5s ease;
+  will-change: transform, box-shadow;
 }
 
-.getInTouch h1 {
-  font-size: clamp(3rem, 8vw, 8rem);
-  color: white;
-  z-index: 10;
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: -1px;
-  animation: fadeInText 1.6s ease forwards;
+.service-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.45);
+  background: rgba(30, 30, 50, 0.85);
 }
 
-.getInTouch img {
+/* === GLARE EFFECT === */
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  opacity: 0;
+  transform: rotate(25deg) translate(-50%, -50%);
+  transition: opacity 0.6s ease, transform 0.7s ease;
+  pointer-events: none;
+}
+
+.service-card:hover::before {
+  opacity: 1;
+  transform: rotate(25deg) translate(0%, 0%);
+}
+
+/* === CARD CONTENT === */
+.service-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  min-height: 520px;
+  max-width: 420px;
+  padding: 2.5rem;
+}
+
+.service-card-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.service-card-header p {
+  font-size: 1rem;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.service-tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.service-tools span {
+  background: #232329;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #3a3a3f;
+  color: #ddd;
+  transition: background 0.3s ease;
+}
+
+.service-tools span:hover {
+  background: #2f2f36;
+}
+
+.service-duration {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.service-duration span {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* === GET IN TOUCH SECTION === */
+.getInTouch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: #0b0b0d;
+  min-height: 90vh;
+}
+
+.getInTouch-bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.35;
-  filter: saturate(0.6) brightness(0.7);
-  transform: scale(1.1);
-  transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.5s ease;
+  opacity: 0.4;
+  z-index: 10;
 }
 
-.getInTouch:hover img {
-  transform: scale(1.05);
-  opacity: 0.45;
+.getInTouch-text {
+  font-size: 10vw;
+  font-weight: 700;
+  text-transform: capitalize;
+  text-align: center;
+  color: #fff;
+  z-index: 20;
+  position: relative;
 }
 
-/* === Scroll Down Animation === */
-.scroll-down-icon {
-  animation: bounce 1.6s infinite;
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-}
-
-/* === Get In Touch Text Animation === */
-@keyframes fadeInText {
-  0% {
-    opacity: 0;
-    transform: translateY(80px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* === Responsive Design === */
-@media (max-width: 1280px) {
-  .service-card {
-    width: 80%;
-    height: 75%;
-    padding: 4rem;
-  }
-}
-
+/* === RESPONSIVE === */
 @media (max-width: 1024px) {
-  .service-card {
-    width: 85%;
-    height: 75%;
-    padding: 3rem;
+  .services-list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
+  .services-list {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
   .service-card {
-    width: 90%;
-    height: auto;
+    max-width: 90%;
+    min-height: 480px;
+  }
+
+  .service-card-content {
+    min-height: 480px;
     padding: 2rem;
-  }
-
-  .service-card h2 {
-    font-size: 2rem;
-  }
-
-  .getInTouch h1 {
-    font-size: 3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .service-card {
-    width: 95%;
-    height: auto;
-    padding: 1.5rem;
-  }
-
-  .service-card h2 {
-    font-size: 1.6rem;
   }
 }

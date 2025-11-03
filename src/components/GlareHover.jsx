@@ -1,87 +1,115 @@
-import { useRef } from 'react';
+// GlareHover.jsx
+import React, { useRef, useEffect } from "react";
 
 const GlareHover = ({
-  width = '500px',
-  height = '500px',
-  background = '#000',
-  borderRadius = '10px',
-  borderColor = '#333',
+  width = "500px",
+  height = "500px",
+  background = "#000",
+  borderRadius = "10px",
+  borderColor = "#333",
   children,
-  glareColor = '#ffffff',
+  glareColor = "#ffffff",
   glareOpacity = 0.5,
   glareAngle = -45,
   glareSize = 250,
   transitionDuration = 650,
   playOnce = false,
-  className = '',
-  style = {}
+  className = "",
+  style = {},
 }) => {
-  const hex = glareColor.replace('#', '');
-  let rgba = glareColor;
-  if (/^[\dA-Fa-f]{6}$/.test(hex)) {
-    const r = parseInt(hex.slice(0, 2), 16);
-    const g = parseInt(hex.slice(2, 4), 16);
-    const b = parseInt(hex.slice(4, 6), 16);
-    rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
-  } else if (/^[\dA-Fa-f]{3}$/.test(hex)) {
-    const r = parseInt(hex[0] + hex[0], 16);
-    const g = parseInt(hex[1] + hex[1], 16);
-    const b = parseInt(hex[2] + hex[2], 16);
-    rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
-  }
-
   const overlayRef = useRef(null);
+
+  // compute rgba from hex or passed string
+  const toRgba = (c, a = glareOpacity) => {
+    if (!c) return `rgba(255,255,255,${a})`;
+    if (c.startsWith("rgba") || c.startsWith("rgb")) return c;
+    const hex = c.replace("#", "");
+    if (hex.length === 3) {
+      const r = parseInt(hex[0] + hex[0], 16);
+      const g = parseInt(hex[1] + hex[1], 16);
+      const b = parseInt(hex[2] + hex[2], 16);
+      return `rgba(${r},${g},${b},${a})`;
+    } else if (hex.length === 6) {
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+    return `rgba(255,255,255,${a})`;
+  };
+
+  const overlayColor = toRgba(glareColor, glareOpacity);
+
+  useEffect(() => {
+    const el = overlayRef.current;
+    if (!el) return;
+    // ensure initial placement off-screen
+    el.style.transform =
+      "translate3d(-120%, -120%, 0) rotate(" + glareAngle + "deg)";
+    el.style.transition = `transform ${transitionDuration}ms cubic-bezier(.22,.9,.35,1)`;
+    el.style.willChange = "transform, opacity";
+    // ensure pointer events none
+    el.style.pointerEvents = "none";
+  }, [glareAngle, transitionDuration]);
 
   const animateIn = () => {
     const el = overlayRef.current;
     if (!el) return;
-
-    el.style.transition = 'none';
-    el.style.backgroundPosition = '-100% -100%, 0 0';
-    el.style.transition = `${transitionDuration}ms ease`;
-    el.style.backgroundPosition = '100% 100%, 0 0';
+    // move overlay across; use translate3d for GPU acceleration
+    el.style.transform =
+      "translate3d(20%, 20%, 0) rotate(" + glareAngle + "deg)";
+    el.style.opacity = "1";
   };
 
   const animateOut = () => {
     const el = overlayRef.current;
     if (!el) return;
-
     if (playOnce) {
-      el.style.transition = 'none';
-      el.style.backgroundPosition = '-100% -100%, 0 0';
+      el.style.transform =
+        "translate3d(-120%, -120%, 0) rotate(" + glareAngle + "deg)";
+      el.style.opacity = "0";
+      // leave at start
     } else {
-      el.style.transition = `${transitionDuration}ms ease`;
-      el.style.backgroundPosition = '-100% -100%, 0 0';
+      el.style.transform =
+        "translate3d(-120%, -120%, 0) rotate(" + glareAngle + "deg)";
+      el.style.opacity = "0";
     }
   };
 
+  // overlay style uses a rotated rectangle that fades in/out
   const overlayStyle = {
-    position: 'absolute',
-    inset: 0,
-    background: `linear-gradient(${glareAngle}deg,
-        hsla(0,0%,0%,0) 60%,
-        ${rgba} 70%,
-        hsla(0,0%,0%,0) 100%)`,
-    backgroundSize: `${glareSize}% ${glareSize}%, 100% 100%`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: '-100% -100%, 0 0',
-    pointerEvents: 'none'
+    position: "absolute",
+    left: "-40%",
+    top: "-40%",
+    width: `${glareSize}%`,
+    height: `${glareSize}%`,
+    background: `linear-gradient(0deg, transparent 0%, ${overlayColor} 40%, ${overlayColor} 60%, transparent 100%)`,
+    transform: `translate3d(-120%,-120%,0) rotate(${glareAngle}deg)`,
+    opacity: 0,
+    borderRadius: "30%",
+    pointerEvents: "none",
+    mixBlendMode: "screen",
   };
 
   return (
     <div
-      className={`relative grid place-items-center overflow-hidden border cursor-pointer ${className}`}
+      className={`relative grid place-items-center overflow-hidden border ${className}`}
       style={{
         width,
         height,
         background,
         borderRadius,
+        borderStyle: "solid",
+        borderWidth: 1,
         borderColor,
-        ...style
+        ...style,
       }}
       onMouseEnter={animateIn}
-      onMouseLeave={animateOut}>
-      <div ref={overlayRef} style={overlayStyle} />
+      onMouseLeave={animateOut}
+      onFocus={animateIn}
+      onBlur={animateOut}
+    >
+      <div ref={overlayRef} style={overlayStyle} aria-hidden />
       {children}
     </div>
   );

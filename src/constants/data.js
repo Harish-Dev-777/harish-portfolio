@@ -35,7 +35,6 @@ export const projects = [
 
 export const services = [
   {
-    id: "01",
     title: "Modern Website Development",
     description:
       "I build fast, responsive, and SEO-optimized websites using React, Next.js, and Tailwind CSS with futuristic design and smooth animations.",
@@ -43,7 +42,6 @@ export const services = [
     duration: "1 to 2 weeks",
   },
   {
-    id: "02",
     title: "Portfolio & Personal Branding Websites",
     description:
       "I design and develop premium personal portfolios with 3D visuals, smooth scroll animations, and strong branding to help professionals stand out online.",
@@ -51,7 +49,6 @@ export const services = [
     duration: "1 to 2 weeks",
   },
   {
-    id: "03",
     title: "E-Commerce Website Development",
     description:
       "I create complete e-commerce platforms with product pages, cart systems, wishlist, checkout, and secure payment integrations — visually stunning and high-performing.",
@@ -66,7 +63,6 @@ export const services = [
     duration: "5 to 6 weeks",
   },
   {
-    id: "04",
     title: "Frontend Animation & Interaction Design",
     description:
       "I craft interactive user experiences using GSAP and Framer Motion — including smooth hero transitions, scroll-triggered reveals, and 3D model interactions.",
@@ -74,7 +70,6 @@ export const services = [
     duration: "4 to 6 days",
   },
   {
-    id: "05",
     title: "UI/UX Design to Code Conversion",
     description:
       "I convert Figma or XD designs into pixel-perfect, fully responsive React websites with clean and maintainable code.",
@@ -82,7 +77,6 @@ export const services = [
     duration: "4 to 7 days",
   },
   {
-    id: "06",
     title: "Landing Page Development",
     description:
       "I build high-converting landing pages with engaging visuals, responsive design, and optimized performance for brands and products.",
@@ -90,7 +84,6 @@ export const services = [
     duration: "3 to 5 days",
   },
   {
-    id: "07",
     title: "Full-Stack Web Applications",
     description:
       "I develop complete full-stack web apps with backend APIs, authentication, and modern UI — ideal for startups and SaaS products.",
@@ -98,7 +91,6 @@ export const services = [
     duration: "4 to 5 weeks",
   },
   {
-    id: "08",
     title: "Website Optimization & SEO",
     description:
       "I improve performance, speed, and SEO structure to ensure websites rank higher and load faster.",
@@ -106,7 +98,6 @@ export const services = [
     duration: "2 to 4 days",
   },
   {
-    id: "09",
     title: "Maintenance & Support Services",
     description:
       "I provide continuous website maintenance, performance upgrades, and bug fixes to keep client sites running smoothly.",
@@ -120,16 +111,9 @@ export const contactData = {
   phone: "+91 9025946625",
   location:
     "Valliyammai St, Dharan Singh Colony, Vadapalani, Chennai, Tamil Nadu 600026",
-  socials: [
-    { name: "LinkedIn", url: "https://www.linkedin.com/in/harish-dev" },
-    { name: "GitHub", url: "https://github.com/harish-dev" },
-    { name: "Dribbble", url: "https://dribbble.com/harishdev" },
-    { name: "Twitter", url: "https://twitter.com/harishdev" },
-    { name: "Instagram", url: "https://instagram.com/harish.dev" },
-  ],
 };
 
-export const navLinks = [
+export const navItems = [
   { name: "Home", path: "#home" },
   { name: "About", path: "#about" },
   { name: "Projects", path: "#projects" },
@@ -142,4 +126,42 @@ export const socialLinks = [
   { name: "GitHub", url: "https://github.com/harish" },
   { name: "Instagram", url: "https://instagram.com/harish" },
   { name: "WhatsApp", url: "https://wa.me/919025946625" },
+];
+
+export const testimonials = [
+  {
+    name: "Aarav Mehta",
+    company: "TechNova Labs",
+    rating: 5,
+    feedback:
+      "Harish built our entire startup website from scratch with outstanding attention to detail. The animations are fluid, the UI looks futuristic, and performance is exceptional. He truly elevated our brand presence.",
+  },
+  {
+    name: "Sophia Johnson",
+    company: "PixelEdge Studio",
+    rating: 4.8,
+    feedback:
+      "The portfolio site Harish created for our creative agency exceeded expectations. It’s fast, visually appealing, and perfectly represents our identity. Communication and delivery were both seamless.",
+  },
+  {
+    name: "Rahul Iyer",
+    company: "Innova Systems",
+    rating: 5,
+    feedback:
+      "We approached Harish to modernize our internal dashboard — he transformed it into a stunning, responsive interface that boosted productivity across the team. Absolutely top-notch developer!",
+  },
+  {
+    name: "Emily Carter",
+    company: "BrightWave Marketing",
+    rating: 4.9,
+    feedback:
+      "Our conversions jumped after Harish redesigned our landing pages. His mastery of animation and user experience brought our brand to life in ways we hadn’t imagined.",
+  },
+  {
+    name: "Karthik Nair",
+    company: "OrbitX Technologies",
+    rating: 5,
+    feedback:
+      "Harish isn’t just a developer — he’s a true problem solver. From prototyping to deployment, every detail was handled with care and creativity. Highly reliable and skilled professional.",
+  },
 ];
