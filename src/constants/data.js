@@ -122,9 +122,9 @@ export const navItems = [
 ];
 
 export const socialLinks = [
-  { name: "LinkedIn", url: "https://linkedin.com/in/harish" },
-  { name: "GitHub", url: "https://https://github.com/Harish-Dev-777" },
-  { name: "Instagram", url: "https://instagram.com/harish" },
+  { name: "LinkedIn", url: "https://www.linkedin.com/in/harish-cse-45b076383" },
+  { name: "GitHub", url: "https://github.com/Harish-Dev-777" },
+  { name: "Instagram", url: "https://www.instagram.com/codecrush_777/" },
   { name: "WhatsApp", url: "https://wa.me/919025946625" },
 ];
 
