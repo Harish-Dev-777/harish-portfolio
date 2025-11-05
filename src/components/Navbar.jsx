@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../styles/NavBar.css";
 import { AnimatePresence, motion } from "framer-motion";
-import { navItems, socialLinks } from "../constants/data"; // ✅ imported
+import { NavLink } from "react-router-dom";
+import { navItems } from "../constants/data"; // ✅ imported
 
 const Navbar = () => {
   const [isActive, setActive] = useState(false);
@@ -55,8 +56,8 @@ const slide = {
   }),
 };
 
-// === NavLinks ===
-const NavLinks = ({ item, index, activeLink, handleClick }) => (
+// === NavLinks (using NavLink from react-router-dom) ===
+const NavLinks = ({ item, index, handleClick }) => (
   <motion.div
     variants={slide}
     initial="initial"
@@ -65,34 +66,23 @@ const NavLinks = ({ item, index, activeLink, handleClick }) => (
     custom={index}
     className="nav-link"
   >
-    <a
-      href={item.path}
-      onClick={() => handleClick(item.path)}
-      className={activeLink === item.path ? "active" : ""}
+    <NavLink
+      to={item.path}
+      className={({ isActive }) =>
+        isActive ? "active" : ""
+      }
+      onClick={() => handleClick()}
     >
       {item.name}
-    </a>
+    </NavLink>
   </motion.div>
 );
 
 // === Nav Menu ===
 const Nav = ({ setActive }) => {
-  const [activeLink, setActiveLink] = useState(window.location.hash || "#home");
-
-  const handleClick = (href) => {
-    setActiveLink(href);
-    window.location.hash = href;
+  const handleClick = () => {
     setActive(false);
   };
-
-  useEffect(() => {
-    const onScroll = () => {
-      const currentHash = window.location.hash;
-      if (currentHash) setActiveLink(currentHash);
-    };
-    window.addEventListener("hashchange", onScroll);
-    return () => window.removeEventListener("hashchange", onScroll);
-  }, []);
 
   return (
     <motion.div
@@ -111,7 +101,6 @@ const Nav = ({ setActive }) => {
                 item={item}
                 index={index}
                 key={index}
-                activeLink={activeLink}
                 handleClick={handleClick}
               />
             ))}

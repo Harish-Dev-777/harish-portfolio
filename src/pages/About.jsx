@@ -3,6 +3,7 @@ import "../styles/About.css";
 import Paragraph from "../components/Paragraph";
 import Scroller from "../components/Scroller";
 import LogoLoop from "../components/LogoLoop";
+import ProfileCard from "../components/ProfileCard";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -121,15 +122,23 @@ I specialize in crafting both the front-end elegance and the back-end strength t
 
   return (
     <section id="about" className="about-section">
-      <h1 className="about-title">About Me</h1>
+      <div className="titleContainer">
+        <h1 className="about-title">About Me</h1>
+      </div>
 
       <div className="about-grid">
         <div className="about-image">
-          <img
-            src="/images/AboutMe.png"
-            alt="Harish - Web Developer"
-            loading="lazy"
-            decoding="async"
+          <ProfileCard
+            name="Harish"
+            title="Web Developer"
+            handle="harish"
+            status="Online"
+            contactText="Contact Me"
+            avatarUrl="/images/Harish.png"
+            showUserInfo={true}
+            enableTilt={true}
+            enableMobileTilt={false}
+            onContactClick={() => console.log("Contact clicked")}
           />
         </div>
 

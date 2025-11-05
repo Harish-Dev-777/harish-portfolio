@@ -4,25 +4,20 @@
   color: #fff;
   padding: 12vh 10vw;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "left right"
+    "map map";
   overflow: hidden;
-}
-
-/* === Layout === */
-.contact-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 6rem;
-  flex-wrap: wrap;
-  margin-top: 30vh;
+  align-items: start;
+  gap: 4rem;
 }
 
 /* === Left === */
 .contact-left {
-  flex: 1.2;
+  grid-area: left;
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -33,7 +28,7 @@
   font-weight: 800;
   letter-spacing: -2px;
   line-height: 1.1;
-  background: linear-gradient(to bottom, #ffffff, #9c9c9c);
+  background: linear-gradient(to bottom, #ffffff, #b5b5b5);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -61,7 +56,7 @@
 
 /* === Right === */
 .contact-right {
-  flex: 0.8;
+  grid-area: right;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
@@ -105,12 +100,13 @@
   width: 100%;
 }
 
-/* === Static Map === */
+/* === Map === */
 .contact-map {
+  grid-area: map;
   position: relative;
-  margin: 10vh auto 0 auto;
-  width: 80%;
-  height: 320px;
+  margin: 8vh auto 0 auto;
+  width: 80%; /* ✅ 80% width */
+  height: 400px;
   border-radius: 1.2rem;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.05);
@@ -139,7 +135,7 @@ iframe.map-loaded {
   opacity: 1;
 }
 
-/* === Map fallback === */
+/* === Map Fallback === */
 .map-fallback {
   position: absolute;
   inset: 0;
@@ -161,9 +157,12 @@ iframe:not(.map-loaded) + .map-fallback {
 
 /* === Responsive === */
 @media (max-width: 1024px) {
-  .contact-container {
-    flex-direction: column;
-    gap: 4rem;
+  #contact {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "left"
+      "right"
+      "map";
   }
 
   .contact-right {
@@ -171,8 +170,8 @@ iframe:not(.map-loaded) + .map-fallback {
   }
 
   .contact-map {
-    width: 95%;
-    height: 260px;
+    width: 85%;
+    height: 300px;
   }
 }
 
@@ -180,16 +179,13 @@ iframe:not(.map-loaded) + .map-fallback {
   .contact-title {
     font-size: 3rem;
   }
-  .contact-details p {
-    font-size: 1.6rem;
-  }
+  .contact-details p,
   .social-link a {
     font-size: 1.6rem;
   }
   .contact-map {
-    width: 100%;
+    width: 90%;
     height: 220px;
-    margin-top: 5vh;
   }
 }
 
@@ -197,16 +193,8 @@ iframe:not(.map-loaded) + .map-fallback {
   #contact {
     padding: 8vh 6vw;
   }
-  .contact-title {
-    font-size: 2.5rem;
-  }
-  .contact-details p {
-    font-size: 1.4rem;
-  }
-  .social-link a {
-    font-size: 1.2rem;
-  }
   .contact-map {
+    width: 90%;
     height: 180px;
   }
 }

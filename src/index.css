@@ -1,4 +1,3 @@
-
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "locomotive-scroll/dist/locomotive-scroll.css";
@@ -151,7 +150,32 @@ a:focus {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+/* flowing menu for home page services component */
+@layer utilities {
+  @keyframes marquee {
+    from {
+      transform: translate3d(0%, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
 
+  .animate-marquee {
+    animation: marquee 18s linear infinite;
+    will-change: transform;
+  }
+}
+
+@layer components {
+  .menu-item {
+    @apply flex-1 relative overflow-hidden text-center shadow-[0_-1px_0_0_#fff];
+  }
+
+  .menu-text {
+    @apply flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-semibold text-white text-[4vh] hover:text-[#060010];
+  }
+}
 /* ---------- Tailwind base layer compatibility ----------
    Avoid heavy universal rules inside @layer where possible.
 */

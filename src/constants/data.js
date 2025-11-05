@@ -13,7 +13,7 @@ export const projects = [
       "A premium portfolio built with React, Three.js, and GSAP featuring 3D character interactions, smooth scroll animations, and a custom cursor.",
     src: "/images/portfolio.jpg",
     color: "#64748b",
-    live: "https://harishportfolio.vercel.app",
+    live: "https://harish-portfolio-tawny.vercel.app/",
   },
   {
     title: "Weatherly - Real-time Weather App",
@@ -114,16 +114,16 @@ export const contactData = {
 };
 
 export const navItems = [
-  { name: "Home", path: "#home" },
-  { name: "About", path: "#about" },
-  { name: "Projects", path: "#projects" },
-  { name: "Services", path: "#services" },
-  { name: "Contact", path: "#contact" },
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Projects", path: "/projects" },
+  { name: "Services", path: "/services" },
+  { name: "Contact", path: "/contact" },
 ];
 
 export const socialLinks = [
   { name: "LinkedIn", url: "https://linkedin.com/in/harish" },
-  { name: "GitHub", url: "https://github.com/harish" },
+  { name: "GitHub", url: "https://https://github.com/Harish-Dev-777" },
   { name: "Instagram", url: "https://instagram.com/harish" },
   { name: "WhatsApp", url: "https://wa.me/919025946625" },
 ];

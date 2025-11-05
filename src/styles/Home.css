@@ -1,0 +1,78 @@
+.supportingTextContainer {
+  margin-top: 10vh;
+  width: 100%;
+  padding: 0 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15%;
+  flex-wrap: wrap;
+}
+
+.supportingTextContainer > div {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* ---------- SERVICES SECTION ---------- */
+.servicesLoopContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5vh;
+  margin-top: 8vh;
+  width: 100%;
+}
+
+.servicesLoopContainer h1 {
+  font-size: clamp(2.2rem, 5vw, 6rem);
+  text-align: center;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #ffffff, #c0c0c0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.servicesLoopContainer > *:not(h1) {
+  width: 100%;
+}
+
+/* ---------- RESPONSIVE LAYOUTS ---------- */
+@media (max-width: 1024px) {
+  .supportingTextContainer {
+    gap: 10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .supportingTextContainer {
+    flex-direction: column;
+    text-align: center;
+    gap: 6vh;
+  }
+
+  .supportingTextContainer > div {
+    width: 90%;
+  }
+
+  .servicesLoopContainer {
+    margin-top: 6vh;
+  }
+
+  .servicesLoopContainer h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .supportingTextContainer {
+    padding: 0 4vw;
+    margin-top: 8vh;
+  }
+
+  .servicesLoopContainer h1 {
+    font-size: 2.2rem;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+}

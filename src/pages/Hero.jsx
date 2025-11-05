@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from "react";
 import "../styles/Hero.css";
 import gsap from "gsap";
 import { SplitText, ScrollTrigger } from "gsap/all";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -13,8 +14,8 @@ const Hero = () => {
   const direction = useRef(-1);
   const xPercent = useRef(0);
   const animFrame = useRef(null);
+  const navigate = useNavigate();
 
-  // GSAP Animations
   useLayoutEffect(() => {
     ctx.current = gsap.context(() => {
       const heading = document.querySelector("#heading");
@@ -70,7 +71,7 @@ const Hero = () => {
 
       gsap.set(firstText.current, { xPercent: xPercent.current });
       gsap.set(secondText.current, { xPercent: xPercent.current });
-   
+
       xPercent.current += 0.25 * direction.current;
       animFrame.current = requestAnimationFrame(animateSlider);
     };
@@ -84,11 +85,8 @@ const Hero = () => {
     };
   }, []);
 
-  // Smooth scroll handler (unchanged)
-  const scrollToSection = (id) => {
-    const section = document.querySelector(id);
-    if (section) section.scrollIntoView({ behavior: "smooth" });
-  };
+  // ✅ Route navigation (React Router)
+  const goTo = (path) => navigate(path);
 
   return (
     <section id="home" className="heroSection">
@@ -101,14 +99,14 @@ const Hero = () => {
       </h2>
 
       <div className="btns">
-        <button className="work" onClick={() => scrollToSection("#projects")}>
+        <button className="work" onClick={() => goTo("/projects")}>
           View My Work
         </button>
 
         <button
           id="hire"
           className="hireBtn group relative"
-          onClick={() => scrollToSection("#contact")}
+          onClick={() => goTo("/contact")}
         >
           <div className="flex items-center gap-3">
             <div className="dot"></div>

@@ -12,16 +12,26 @@
 }
 
 /* === Title === */
-.about-title {
-  font-size: clamp(2.5rem, 5vw, 5rem);
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 2rem;
-  transition: transform 0.4s ease;
+.titleContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
-.about-title:hover {
-  transform: scale(1.05);
+.about-title {
+  font-size: 10vw;
+  font-weight: 700;
+  transform: translate3d(0, -100px, 0);
+  background: linear-gradient(180deg, #f5f5f5,#fff, #555555);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 /* === Grid Layout === */
@@ -92,8 +102,8 @@
 .about-logoLoop ul {
   display: flex;
   align-items: center;
-  gap: 4rem; 
-  margin-right:50px;
+  gap: 4rem;
+  margin-right: 50px;
 }
 
 /* === Quote Section === */
