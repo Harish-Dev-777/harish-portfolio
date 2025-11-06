@@ -10,7 +10,6 @@ import "../styles/Services.css";
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const Services = () => {
-  const introRef = useRef(null);
   const getInTouchRef = useRef(null);
   const textRef = useRef(null);
   const smootherRef = useRef(null);

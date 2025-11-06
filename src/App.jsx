@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { useEffect, memo } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger, SplitText } from "gsap/all";
@@ -11,6 +11,7 @@ import Projects from "./pages/Projects";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "./pages/NotFound";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -25,15 +26,14 @@ const App = () => {
     <main className="w-full overflow-x-hidden">
       <ScrollToTop />
       <Navbar />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
-
       <Footer />
     </main>
   );

@@ -1,0 +1,102 @@
+.notfound-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #06060a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Background stars */
+.stars-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.2;
+  width: calc(1px + (3 - 1) * random(1));
+  height: calc(1px + (3 - 1) * random(1));
+  top: calc(1% + 99% * random(1));
+  left: calc(1% + 99% * random(1));
+}
+
+/* Main Content */
+.notfound-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 1.5rem;
+  max-width: 600px;
+}
+
+.notfound-title {
+  font-size: clamp(5rem, 18vw, 14rem);
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(to bottom, #fff, #777);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.notfound-subtitle {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 600;
+  color: #b3b3b3;
+  margin-top: 1rem;
+}
+
+.notfound-description {
+  margin-top: 1rem;
+  color: #a1a1a1;
+  line-height: 1.5;
+}
+
+.notfound-button {
+  margin-top: 2rem;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 50px;
+  background: white;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notfound-button:hover {
+  background: #e5e5e5;
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Floating Orb */
+.orb {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+  filter: blur(120px);
+  opacity: 0.15;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .orb {
+    width: 400px;
+    height: 400px;
+    filter: blur(90px);
+  }
+}
