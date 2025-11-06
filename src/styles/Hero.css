@@ -248,6 +248,11 @@
     padding: 10px 20px;
   }
 
+  .hireBtn{
+    padding:10px 30px;
+  }
+  
+
   .sliderContainer {
     top: calc(100vh - 200px);
   }

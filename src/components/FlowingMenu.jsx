@@ -119,11 +119,11 @@ function MenuItem({ link, text, image, onHoverStart }) {
       {/* Hover marquee reveal */}
       <div
         ref={marqueeRef}
-        className="absolute top-0 left-0 w-full h-full bg-white text-[#060010] overflow-hidden pointer-events-none translate-y-[101%]"
+        className="absolute top-0 left-0 w-full h-full bg-white text-[#060010] overflow-hidden pointer-events-none translate-y-[101%] "
       >
         <div
           ref={marqueeInnerRef}
-          className="flex items-center h-full w-[400%] whitespace-nowrap will-change-transform"
+          className="flex items-center h-full w-[400%] whitespace-nowrap will-change-transform "
         >
           {repeatedMarqueeContent}
           {repeatedMarqueeContent}
