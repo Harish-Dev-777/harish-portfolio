@@ -7,8 +7,8 @@
 /* ---------- Core box model & accessibility ----------*/
 :root {
   /* Color tokens (kept as you had them; used throughout site) */
-  --color-primary-bg: #202028;
-  --color-secondary-bg: #18181b;
+  --color-primary-bg: #020617;
+  --color-secondary-bg: #0a0e1a;
   --color-tertiary-bg: #4a4a4c;
 
   --text-primary: #fafafa;

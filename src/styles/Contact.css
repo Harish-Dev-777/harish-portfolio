@@ -1,6 +1,6 @@
 /* === Contact Section === */
 #contact {
-  background: #0c0c0e;
+  background-color: var(--color-primary-bg);
   color: #fff;
   padding: 12vh 10vw;
   min-height: 100vh;

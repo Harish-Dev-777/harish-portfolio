@@ -3,14 +3,14 @@
   width: 100%;
   color: #fff;
   overflow: hidden;
-  background: #0d0d11;
+  background: var(--color-primary-bg);
 }
 
 /* === INTRO SECTION === */
 .intro-section {
   width: 100%;
   height: 100vh;
-  background: #131318;
+  background: var(--color-primary-bg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,7 +59,7 @@
   margin: 20vh 0px 20vh 0px;
   padding: clamp(2rem, 5vw, 6rem);
   justify-items: center;
-  background: radial-gradient(circle at top left, #0a0a0f, #111);
+  background: var(--color-primary-bg);
 }
 
 /* === SERVICE CARD === */
@@ -70,7 +70,7 @@
   min-height: 520px; /* reduced slightly */
   border-radius: 25px;
   border: 1px solid rgba(90, 90, 110, 0.25);
-  background: rgba(20, 20, 30, 0.7);
+  background: var(--color-secondary-bg);
   backdrop-filter: blur(25px);
   text-align: center;
   overflow: hidden;

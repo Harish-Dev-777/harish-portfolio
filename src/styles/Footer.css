@@ -1,6 +1,6 @@
 /* === Footer Base === */
 #footer {
-  background: radial-gradient(circle at top left, #0e0e10, #070708 80%);
+  background-color: var(--color-secondary-bg);
   color: #f0f0f0;
   padding: 10vh 8vw 5vh;
   position: relative;
