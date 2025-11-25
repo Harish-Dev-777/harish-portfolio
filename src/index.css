@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @import "locomotive-scroll/dist/locomotive-scroll.css";
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Oxanium:wght@200..800&display=swap");
-
 /* ---------- Core box model & accessibility ----------*/
 :root {
   /* Color tokens (kept as you had them; used throughout site) */

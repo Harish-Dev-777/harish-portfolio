@@ -5,6 +5,8 @@ import gsap from "gsap";
 import { ScrollTrigger, ScrollSmoother } from "gsap/all";
 import GlareHover from "../components/GlareHover";
 import { services } from "../constants/data";
+import SEO from "../components/SEO";
+import { pageMetadata } from "../utils/seo";
 import "../styles/Services.css";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
@@ -59,6 +61,11 @@ const Services = () => {
 
   return (
     <div id="services" className="services-wrapper">
+      <SEO
+        title={pageMetadata.services.title}
+        description={pageMetadata.services.description}
+        keywords={pageMetadata.services.keywords}
+      />
       {/* === Intro Section === */}
       <section className="intro-section">
         <h1 className="service-title">Services</h1>

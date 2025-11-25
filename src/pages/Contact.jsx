@@ -1,27 +1,39 @@
-import React from "react";
+import React, { memo } from "react";
 import { NavLink } from "react-router-dom";
 import "../styles/Contact.css";
 import { contactData, socialLinks } from "../constants/data";
+import SEO from "../components/SEO";
+import { pageMetadata } from "../utils/seo";
+import EnhancedMap from "../components/EnhancedMap";
 
 const Contact = () => {
-  const mapKey = `${contactData.location}-${window.innerWidth < 768 ? "mobile" : "desktop"}`;
-
   return (
     <section id="contact">
+      <SEO
+        title={pageMetadata.contact.title}
+        description={pageMetadata.contact.description}
+        keywords={pageMetadata.contact.keywords}
+      />
       {/* === Left Section === */}
       <div className="contact-left">
-        <h1 className="contact-title">Let’s Connect</h1>
+        <h1 className="contact-title">Let's Connect</h1>
 
         <div className="contact-details">
           <p
             onClick={() => (window.location.href = `mailto:${contactData.email}`)}
             className="contact-item"
+            role="button"
+            tabIndex={0}
+            aria-label={`Email ${contactData.email}`}
           >
             {contactData.email}
           </p>
           <p
             onClick={() => (window.location.href = `tel:${contactData.phone}`)}
             className="contact-item"
+            role="button"
+            tabIndex={0}
+            aria-label={`Call ${contactData.phone}`}
           >
             {contactData.phone}
           </p>
@@ -41,23 +53,10 @@ const Contact = () => {
         </ul>
       </div>
 
-      {/* === Map Section === */}
-      <div className="contact-map">
-        <iframe
-          key={mapKey}
-          title="Location Map"
-          src={`https://www.google.com/maps?q=${encodeURIComponent(
-            contactData.location
-          )}&output=embed`}
-          loading="lazy"
-          allowFullScreen
-          referrerPolicy="no-referrer-when-downgrade"
-          onLoad={(e) => e.target.classList.add("map-loaded")}
-        ></iframe>
-        <div className="map-fallback">Loading map...</div>
-      </div>
+      {/* === Enhanced Map Section === */}
+      <EnhancedMap location={contactData.location} />
     </section>
   );
 };
 
-export default Contact;
+export default memo(Contact);

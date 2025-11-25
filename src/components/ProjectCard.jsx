@@ -1,33 +1,94 @@
+import { memo, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "../styles/Projects.css";
 import { FiExternalLink } from "react-icons/fi";
 
-const ProjectCard = ({ index, title, setModal, live }) => {
-  const handleMouseEnter = () => setModal({ active: true, index });
-  const handleMouseLeave = () => setModal({ active: false, index });
+const ProjectCard = memo(({ title, src, color, live }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef(null);
+
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
+
   const handleClick = () => {
     if (live) window.open(live, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <div
-      className="card"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
-      <h2>{title}</h2>
-      <div className="cardBottom">
-        <p>Design & Development</p>
-
-        {live && (
-          <div className="goLive">
-            <FiExternalLink className="goLiveIcon" />
-            <span>Click to Go Live</span>
-          </div>
+    <div className="projectCardWrapper" ref={cardRef}>
+      {/* Modal that appears above the card */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            className="cardModal"
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ duration: 0.3, ease: [0.5, 1, 0.89, 1] }}
+            style={{
+              backgroundColor: color,
+            }}
+          >
+            <div className="cardModalContent">
+              {live ? (
+                <a
+                  href={live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cardModalImageLink"
+                >
+                  <img
+                    src={src}
+                    alt={title}
+                    width={320}
+                    height={240}
+                    loading="lazy"
+                  />
+                  <div className="cardModalOverlay">
+                    <FiExternalLink size={24} />
+                    <span>View Live</span>
+                  </div>
+                </a>
+              ) : (
+                <img
+                  src={src}
+                  alt={title}
+                  width={320}
+                  height={240}
+                  loading="lazy"
+                />
+              )}
+            </div>
+          </motion.div>
         )}
+      </AnimatePresence>
+
+      {/* The actual card */}
+      <div
+        className="card"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+        role="button"
+        tabIndex={0}
+        aria-label={`View ${title} project`}
+      >
+        <h2>{title}</h2>
+        <div className="cardBottom">
+          <p>Design & Development</p>
+
+          {live && (
+            <div className="goLive">
+              <FiExternalLink className="goLiveIcon" />
+              <span>Click to Go Live</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
-};
+});
+
+ProjectCard.displayName = "ProjectCard";
 
 export default ProjectCard;

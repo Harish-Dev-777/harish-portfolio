@@ -37,6 +37,12 @@
   }
 }
 
+/* === Project Card Wrapper === */
+.projectCardWrapper {
+  position: relative;
+  width: 100%;
+}
+
 /* === Individual Project Card === */
 .card {
   display: flex;
@@ -49,6 +55,7 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
   will-change: transform, opacity;
   backface-visibility: hidden;
+  z-index: 1;
 }
 
 .card h2 {
@@ -113,82 +120,75 @@
   color: #999;
 }
 
-/* === Modal === */
-.modalContainer {
-  height: 350px;
+/* === Card Modal (appears above each card) === */
+.cardModal {
+  position: absolute;
+  bottom: calc(100% + 20px);
+  left: 50%;
+  transform: translateX(-50%);
   width: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  overflow: hidden;
-  pointer-events: none;
+  height: 350px;
   border-radius: 20px;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+              0 0 30px rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
+  z-index: 10;
+  pointer-events: auto;
   will-change: transform, opacity;
-  backface-visibility: hidden;
 }
 
-.modalSlider {
-  height: 100%;
+.cardModalContent {
   width: 100%;
-  position: absolute;
-  transition: top 0.5s cubic-bezier(0.61, 1, 0.88, 1);
-}
-
-.modal {
-  position: relative;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
-.modal img {
+.cardModalImageLink {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-decoration: none;
+}
+
+.cardModal img {
+  width: 85%;
   height: auto;
-  width: 80%;
   border-radius: 14px;
   object-fit: cover;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.4s ease;
-  will-change: transform;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
 }
 
-.modal:hover img {
+.cardModalImageLink:hover img {
   transform: scale(1.05);
 }
 
-/* === Live Icon === */
-.liveLinkIcon {
+.cardModalOverlay {
   position: absolute;
-  bottom: 25px;
-  right: 25px;
-  font-size: 2rem;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 10px;
-  border-radius: 50%;
-  backdrop-filter: blur(10px);
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
   opacity: 0;
-  transform: scale(0.8);
-  pointer-events: auto;
-  transition: all 0.4s ease;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  transition: opacity 0.3s ease;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.modal:hover .liveLinkIcon {
+.cardModalImageLink:hover .cardModalOverlay {
   opacity: 1;
-  transform: scale(1);
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.4);
-}
-
-.liveLinkIcon:hover {
-  transform: scale(1.15) rotate(5deg);
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
 }
 
 /* === Responsive === */
@@ -212,7 +212,7 @@
     font-size: 2.2rem;
   }
 
-  .modalContainer {
+  .cardModal {
     width: 320px;
     height: 260px;
   }
@@ -232,12 +232,12 @@
     font-size: 1.8rem;
   }
 
-  .modalContainer {
+  .cardModal {
     width: 280px;
     height: 220px;
   }
 
-  .modal img {
+  .cardModal img {
     width: 90%;
   }
 }
@@ -251,7 +251,7 @@
     font-size: 1.6rem;
   }
 
-  .modalContainer {
+  .cardModal {
     width: 240px;
     height: 180px;
   }

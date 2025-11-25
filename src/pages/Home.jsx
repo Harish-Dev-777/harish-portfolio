@@ -5,6 +5,8 @@ import CurvedLoop from "../components/CurvedLoop";
 import "../styles/Home.css";
 import ServiceFlowingMenu from "../components/ServiceFlowingMenu";
 import Contact from "./Contact";
+import SEO from "../components/SEO";
+import { pageMetadata } from "../utils/seo";
 
 const Home = () => {
   const supportingText = `From small stores to startups - I help bring your business ideas to life with pixel-perfect design, smooth user experience, and performance-driven development.`;
@@ -13,6 +15,11 @@ const Home = () => {
 
   return (
     <div>
+      <SEO
+        title={pageMetadata.home.title}
+        description={pageMetadata.home.description}
+        keywords={pageMetadata.home.keywords}
+      />
       <Hero />
 
       {/* Supporting Section */}

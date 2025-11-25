@@ -2,16 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/images/logo.png" />
+    
+    <!-- Primary Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>awwards-portfolio</title>
+    <meta name="theme-color" content="#020617" />
+    <meta name="description" content="Award-winning freelance web developer creating modern, high-performance websites and web applications. Specializing in React, 3D experiences, and pixel-perfect design." />
+    <meta name="keywords" content="web developer, freelance developer, react developer, web design, portfolio, UI/UX, 3D websites" />
+    <meta name="author" content="Harish" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+    <link rel="apple-touch-icon" href="/images/logo.png" />
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="dns-prefetch" href="https://prod.spline.design" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Oxanium:wght@200..800&display=swap" rel="stylesheet" />
+    
+    <!-- Title -->
+    <title>Harish - Freelance Web Developer | Modern Digital Experiences</title>
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="/manifest.json" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Load Spline viewer asynchronously for better performance -->
     <script
       type="module"
       src="https://unpkg.com/@splinetool/viewer@1.10.90/build/spline-viewer.js"
     ></script>
+    
+    <!-- Fallback for users without JavaScript -->
+    <noscript>
+      <div style="text-align: center; padding: 2rem; font-family: system-ui;">
+        <h1>JavaScript Required</h1>
+        <p>Please enable JavaScript to view this website.</p>
+      </div>
+    </noscript>
   </body>
 </html>

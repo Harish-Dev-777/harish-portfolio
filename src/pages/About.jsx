@@ -4,6 +4,8 @@ import Paragraph from "../components/Paragraph";
 import Scroller from "../components/Scroller";
 import LogoLoop from "../components/LogoLoop";
 import ProfileCard from "../components/ProfileCard";
+import SEO from "../components/SEO";
+import { pageMetadata } from "../utils/seo";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -122,6 +124,11 @@ I specialize in crafting both the front-end elegance and the back-end strength t
 
   return (
     <section id="about" className="about-section">
+      <SEO
+        title={pageMetadata.about.title}
+        description={pageMetadata.about.description}
+        keywords={pageMetadata.about.keywords}
+      />
       <div className="titleContainer">
         <h1 className="about-title">About Me</h1>
       </div>

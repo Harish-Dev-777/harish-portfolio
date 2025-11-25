@@ -5,8 +5,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15%;
+  gap: 10%;
   flex-wrap: wrap;
+  min-height: 60vh; /* Give it some proper height */
 }
 
 .supportingTextContainer > div {
@@ -18,19 +19,20 @@
 .servicesLoopContainer {
   display: flex;
   flex-direction: column;
-  gap: 5vh;
-  margin-top: 8vh;
+  margin-top: 0; /* Remove margin to let it flow naturally */
   width: 100%;
+  min-height: 100vh; /* Full viewport height */
 }
 
 .servicesLoopContainer h1 {
-  font-size: clamp(2.2rem, 5vw, 6rem);
+  font-size: clamp(3rem, 8vw, 8rem); /* Larger, more impactful title */
   text-align: center;
-  margin: 0 auto;
+  margin: 5vh auto;
   background: linear-gradient(90deg, #ffffff, #c0c0c0);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  width: 100%;
 }
 
 .servicesLoopContainer > *:not(h1) {

@@ -5,7 +5,12 @@ import {
   useState,
   useMemo,
   useId,
+  memo,
 } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const CurvedLoop = ({
   marqueeText = "",
@@ -25,7 +30,9 @@ const CurvedLoop = ({
   const measureRef = useRef(null);
   const textPathRef = useRef(null);
   const pathRef = useRef(null);
+  const containerRef = useRef(null);
   const [spacing, setSpacing] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
   const uid = useId();
   const pathId = `curve-${uid}`;
   const pathD = `M-100,40 Q500,${40 + curveAmount} 1540,40`;
@@ -45,6 +52,31 @@ const CurvedLoop = ({
         .join("")
     : text;
 
+  // Scroll-triggered reveal animation
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Fade in and scale up on scroll
+      gsap.from(containerRef.current, {
+        opacity: 0,
+        scale: 0.95,
+        y: 50,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          end: "top 50%",
+          toggleActions: "play none none none",
+          onEnter: () => setIsVisible(true),
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   // Measure text width once layout is ready
   useLayoutEffect(() => {
     if (measureRef.current)
@@ -54,22 +86,43 @@ const CurvedLoop = ({
   useEffect(() => {
     if (!spacing || !ready || !textPathRef.current) return;
 
+    // Check for reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReducedMotion) {
+      // Static position for reduced motion
+      textPathRef.current.setAttribute("startOffset", "0px");
+      return;
+    }
+
     let lastTime = performance.now();
     let offset = -spacing;
     offsetRef.current = offset;
     textPathRef.current.setAttribute("startOffset", offset + "px");
 
+    // Add will-change hint
+    if (textPathRef.current.parentElement) {
+      textPathRef.current.parentElement.style.willChange = 'transform';
+    }
+
     const loop = (time) => {
-      const deltaTime = (time - lastTime) / 16.67; // normalize to ~60fps
+      // Throttle to 60fps
+      const deltaTime = time - lastTime;
+      if (deltaTime < 16) {
+        requestAnimationFrame(loop);
+        return;
+      }
+      
+      const normalizedDelta = deltaTime / 16.67; // normalize to ~60fps
       lastTime = time;
 
       if (!dragRef.current && textPathRef.current) {
-        // smooth motion with momentum
+        // Enhanced smooth motion with better momentum
         const baseSpeed = dirRef.current === "right" ? speed : -speed;
-        momentumRef.current *= 0.95; // slow down gradually
-        const delta = baseSpeed + momentumRef.current * 0.5;
+        momentumRef.current *= 0.92; // Slightly less friction for smoother feel
+        const delta = baseSpeed + momentumRef.current * 0.6; // More momentum influence
 
-        offset += delta * deltaTime;
+        offset += delta * normalizedDelta;
         const wrapPoint = spacing;
         if (offset <= -wrapPoint) offset += wrapPoint;
         if (offset > 0) offset -= wrapPoint;
@@ -82,7 +135,14 @@ const CurvedLoop = ({
     };
 
     const frame = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frame);
+    
+    return () => {
+      cancelAnimationFrame(frame);
+      // Clean up will-change
+      if (textPathRef.current?.parentElement) {
+        textPathRef.current.parentElement.style.willChange = 'auto';
+      }
+    };
   }, [spacing, speed, ready]);
 
   const onPointerDown = (e) => {
@@ -92,6 +152,15 @@ const CurvedLoop = ({
     velRef.current = 0;
     momentumRef.current = 0;
     e.target.setPointerCapture(e.pointerId);
+    
+    // Scale down slightly on grab
+    if (containerRef.current) {
+      gsap.to(containerRef.current, {
+        scale: 0.98,
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    }
   };
 
   const onPointerMove = (e) => {
@@ -113,7 +182,16 @@ const CurvedLoop = ({
     if (!interactive) return;
     dragRef.current = false;
     dirRef.current = velRef.current > 0 ? "right" : "left";
-    momentumRef.current = velRef.current; // give smooth inertia after release
+    momentumRef.current = velRef.current * 1.5; // Enhanced momentum on release
+    
+    // Scale back to normal
+    if (containerRef.current) {
+      gsap.to(containerRef.current, {
+        scale: 1,
+        duration: 0.4,
+        ease: "elastic.out(1, 0.5)",
+      });
+    }
   };
 
   const cursorStyle = interactive
@@ -124,8 +202,13 @@ const CurvedLoop = ({
 
   return (
     <div
+      ref={containerRef}
       className="min-h-screen flex items-center justify-center w-full"
-      style={{ visibility: ready ? "visible" : "hidden", cursor: cursorStyle }}
+      style={{ 
+        visibility: ready ? "visible" : "hidden", 
+        cursor: cursorStyle,
+        willChange: isVisible ? 'transform, opacity' : 'auto',
+      }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
@@ -168,4 +251,5 @@ const CurvedLoop = ({
   );
 };
 
-export default CurvedLoop;
+// Export with memo to prevent unnecessary re-renders
+export default memo(CurvedLoop);

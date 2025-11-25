@@ -22,7 +22,7 @@ const demoItems = [
 ];
 
 const ServiceFlowingMenu = () => (
-  <div style={{ height: "600px", position: "relative" }}>
+  <div style={{ height: "100vh", width: "100%", position: "relative" }}>
     <FlowingMenu items={demoItems} />
   </div>
 );
