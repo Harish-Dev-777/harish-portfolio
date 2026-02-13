@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  FiMapPin, 
-  FiNavigation, 
-  FiMaximize2, 
+import {
+  FiMapPin,
+  FiNavigation,
+  FiMaximize2,
   FiMinimize2,
   FiZoomIn,
   FiZoomOut,
   FiMap,
-  FiLayers
+  FiLayers,
 } from "react-icons/fi";
 import "../styles/Contact.css";
 
@@ -25,17 +25,17 @@ const EnhancedMap = memo(({ location }) => {
     // Use the standard Google Maps embed with layer parameter for map types
     const baseUrl = "https://maps.google.com/maps";
     const encodedLocation = encodeURIComponent(location);
-    
+
     // Map type parameter mapping
     const layerMap = {
-      roadmap: "m",      // Standard roadmap
-      satellite: "k",    // Satellite imagery
-      hybrid: "h",       // Hybrid (satellite + labels)
-      terrain: "p"       // Terrain
+      roadmap: "m", // Standard roadmap
+      satellite: "k", // Satellite imagery
+      hybrid: "h", // Hybrid (satellite + labels)
+      terrain: "p", // Terrain
     };
-    
+
     const layer = layerMap[mapType] || "m";
-    
+
     // Build URL with proper parameters
     return `${baseUrl}?q=${encodedLocation}&t=${layer}&z=${zoom}&output=embed&iwloc=near`;
   };
@@ -70,12 +70,13 @@ const EnhancedMap = memo(({ location }) => {
     };
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
   // Zoom controls
-  const handleZoomIn = () => setZoom(prev => Math.min(prev + 1, 21));
-  const handleZoomOut = () => setZoom(prev => Math.max(prev - 1, 1));
+  const handleZoomIn = () => setZoom((prev) => Math.min(prev + 1, 21));
+  const handleZoomOut = () => setZoom((prev) => Math.max(prev - 1, 1));
 
   // Map type options
   const mapTypes = [
@@ -86,16 +87,15 @@ const EnhancedMap = memo(({ location }) => {
   ];
 
   return (
-    <div 
+    <div
       ref={mapContainerRef}
-      className={`enhanced-map-container ${isFullscreen ? 'fullscreen' : ''}`}
+      className={`enhanced-map-container ${isFullscreen ? "fullscreen" : ""}`}
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
     >
       {/* Map iframe */}
       <iframe
         ref={iframeRef}
-        key={`${mapType}-${zoom}`}
         title="Enhanced Location Map"
         src={getMapUrl()}
         loading="lazy"
@@ -124,7 +124,7 @@ const EnhancedMap = memo(({ location }) => {
                     <button
                       key={type.value}
                       onClick={() => setMapType(type.value)}
-                      className={`map-type-btn ${mapType === type.value ? 'active' : ''}`}
+                      className={`map-type-btn ${mapType === type.value ? "active" : ""}`}
                       title={type.label}
                       aria-label={`Switch to ${type.label} view`}
                     >
@@ -140,9 +140,15 @@ const EnhancedMap = memo(({ location }) => {
                 onClick={toggleFullscreen}
                 className="map-control-btn"
                 title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-                aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                aria-label={
+                  isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
+                }
               >
-                {isFullscreen ? <FiMinimize2 size={20} /> : <FiMaximize2 size={20} />}
+                {isFullscreen ? (
+                  <FiMinimize2 size={20} />
+                ) : (
+                  <FiMaximize2 size={20} />
+                )}
               </button>
             </div>
 

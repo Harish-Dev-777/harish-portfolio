@@ -1,19 +1,30 @@
-import React, { useRef, useEffect, useState, memo, useCallback } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  memo,
+  useCallback,
+  useMemo,
+} from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function FlowingMenu({ items = [] }) {
-  const activeItem = useRef(null);
   const containerRef = useRef(null);
+  // Track active marquee reference to stop it from other items
+  const activeMarqueeRef = useRef(null);
 
-  const handleItemHover = useCallback((id) => {
-    if (activeItem.current && activeItem.current !== id) {
-      // Stop previous marquee
-      activeItem.current.stopMarquee();
+  // Stable callback for hover start
+  const handleItemHover = useCallback((stopMarqueeFn) => {
+    if (
+      activeMarqueeRef.current &&
+      activeMarqueeRef.current !== stopMarqueeFn
+    ) {
+      activeMarqueeRef.current(); // Stop the previous marquee
     }
-    activeItem.current = id;
+    activeMarqueeRef.current = stopMarqueeFn;
   }, []);
 
   // Scroll-triggered stagger animation for menu items
@@ -21,23 +32,19 @@ function FlowingMenu({ items = [] }) {
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      const menuItems = containerRef.current.querySelectorAll('.menu-item');
-      
-      // Use from() to animate FROM invisible TO visible (default state)
-      // This is safer than set() + to()
+      const menuItems = containerRef.current.querySelectorAll(".menu-item");
+
       gsap.from(menuItems, {
         opacity: 0,
         y: 100,
-        scale: 0.95,
-        duration: 0.8,
+        duration: 1,
         stagger: 0.1,
-        ease: "power3.out",
-        clearProps: "all", // Clear props after animation to prevent conflicts
+        ease: "power4.out",
+        clearProps: "all",
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top bottom-=50", // Trigger when top of menu enters bottom of viewport
-          end: "bottom top",
-          toggleActions: "play none none none", // Play once and stay
+          start: "top 85%", // Trigger earlier for smoother entry
+          toggleActions: "play none none reverse",
         },
       });
     }, containerRef);
@@ -46,13 +53,18 @@ function FlowingMenu({ items = [] }) {
   }, [items]);
 
   return (
-    <div ref={containerRef} className="w-full h-full overflow-hidden bg-[#060010] text-white">
+    <div
+      ref={containerRef}
+      className="w-full h-full overflow-hidden bg-[#060010] text-white"
+    >
       <nav className="flex flex-col h-full m-0 p-0">
         {items.map((item, idx) => (
           <MenuItem
             key={idx}
-            {...item}
-            onHoverStart={(refObj) => handleItemHover(refObj)}
+            link={item.link}
+            text={item.text}
+            image={item.image}
+            onHoverStart={handleItemHover}
           />
         ))}
       </nav>
@@ -65,48 +77,70 @@ const MenuItem = memo(({ link, text, image, onHoverStart }) => {
   const marqueeInnerRef = useRef(null);
   const marqueeTl = useRef(null);
   const enterTl = useRef(null);
+  const leaveTl = useRef(null);
   const itemRef = useRef(null);
   const [isActive, setIsActive] = useState(false);
 
-  // Start marquee scrolling with improved speed
+  // Start marquee scrolling
   const startMarquee = useCallback(() => {
-    stopMarquee();
+    if (marqueeTl.current) marqueeTl.current.kill();
+
+    // Reset to 0 if needed or ensure seamless loop
+    // Using xPercent: -50 means we need to ensure content is wide enough
     marqueeTl.current = gsap.to(marqueeInnerRef.current, {
       xPercent: -50,
       repeat: -1,
-      duration: 15, // Faster marquee
+      duration: 20, // Slightly slower for smoothness
       ease: "none",
-      // Removed force3D: true to avoid potential WebGL context errors
+      force3D: true, // Hardware acceleration
     });
   }, []);
 
   // Stop marquee
   const stopMarquee = useCallback(() => {
-    if (marqueeTl.current) marqueeTl.current.kill();
-    marqueeTl.current = null;
-    gsap.set(marqueeInnerRef.current, { xPercent: 0 });
+    if (marqueeTl.current) {
+      marqueeTl.current.pause();
+    }
+    // We don't kill it immediately to avoid jumps if we resume,
+    // but here we want to reset for the next reveal usually.
+    // Optimized: pause first.
   }, []);
 
   const handleMouseEnter = useCallback(() => {
     setIsActive(true);
-    onHoverStart({ stopMarquee });
+    // Notify parent to stop others, passing our stop function
+    onHoverStart(stopMarquee);
+
+    // Ensure we are ready to animate
     if (!marqueeRef.current || !marqueeInnerRef.current) return;
 
-    enterTl.current = gsap.timeline({
-      defaults: { duration: 0.6, ease: "expo.out" }, // Ultra smooth premium ease
-    });
-    
-    enterTl.current
-      .set(marqueeRef.current, { y: "101%", willChange: "transform" })
-      .to(marqueeRef.current, { y: "0%" })
-      .call(startMarquee, [], "-=0.4"); // Start marquee slightly before reveal finishes
+    // Kill any leaving animation
+    if (leaveTl.current) leaveTl.current.kill();
 
-    // Smooth scale effect
+    enterTl.current = gsap.timeline({
+      defaults: { duration: 0.6, ease: "expo.out" },
+    });
+
+    // Make sure marquee container is visible and ready
+    enterTl.current
+      .set(marqueeRef.current, {
+        yPercent: 101,
+        autoAlpha: 1,
+      })
+      .to(marqueeRef.current, {
+        yPercent: 0,
+        force3D: true,
+      })
+      .call(startMarquee, [], "<"); // Start marquee immediately
+
+    // Scale main item
     if (itemRef.current) {
       gsap.to(itemRef.current, {
         scale: 1.02,
         duration: 0.6,
         ease: "expo.out",
+        zIndex: 10,
+        overwrite: "auto",
       });
     }
   }, [onHoverStart, startMarquee, stopMarquee]);
@@ -115,78 +149,100 @@ const MenuItem = memo(({ link, text, image, onHoverStart }) => {
     setIsActive(false);
     if (!marqueeRef.current) return;
 
-    gsap.to(marqueeRef.current, {
-      y: "101%",
-      duration: 0.5,
-      ease: "power3.inOut", // Smooth exit
-      onStart: stopMarquee,
+    if (enterTl.current) enterTl.current.kill();
+
+    leaveTl.current = gsap.timeline({
       onComplete: () => {
+        stopMarquee();
         if (marqueeRef.current) {
-          marqueeRef.current.style.willChange = 'auto';
+          gsap.set(marqueeRef.current, { autoAlpha: 0 }); // Hide completely after exit
+          gsap.set(marqueeInnerRef.current, { xPercent: 0 }); // Reset position
         }
       },
     });
 
-    // Scale back smoothly
+    leaveTl.current.to(marqueeRef.current, {
+      yPercent: 101,
+      duration: 0.5,
+      ease: "power3.inOut",
+      force3D: true,
+    });
+
+    // Scale back
     if (itemRef.current) {
       gsap.to(itemRef.current, {
         scale: 1,
         duration: 0.6,
         ease: "expo.out",
+        zIndex: 1,
+        overwrite: "auto",
       });
     }
   }, [stopMarquee]);
 
   useEffect(() => {
     return () => {
-      // Cleanup on unmount
       if (marqueeTl.current) marqueeTl.current.kill();
       if (enterTl.current) enterTl.current.kill();
+      if (leaveTl.current) leaveTl.current.kill();
     };
   }, []);
 
-  // Repeat content for seamless loop
-  const repeatedMarqueeContent = Array.from({ length: 8 }).map((_, idx) => (
-    <React.Fragment key={idx}>
-      <span className="uppercase font-semibold text-[3.5vh] px-[2vw] whitespace-nowrap text-[#060010]">
-        {text}
-      </span>
-      <div
-        className="w-[180px] h-[7vh] mx-[2vw] rounded-[40px] bg-cover bg-center flex-shrink-0 shadow-lg"
-        style={{ backgroundImage: `url(${image})` }}
-      />
-    </React.Fragment>
-  ));
+  // Optimize marquee content rendering
+  const repeatedMarqueeContent = useMemo(() => {
+    return Array.from({ length: 4 }).map((_, idx) => (
+      <React.Fragment key={idx}>
+        <span className="uppercase font-semibold text-[clamp(2rem,4vh,4rem)] px-[2vw] whitespace-nowrap text-[#060010]">
+          {text}
+        </span>
+        <div className="w-[clamp(120px,12vw,200px)] h-[clamp(40px,6vh,80px)] mx-[2vw] rounded-full overflow-hidden flex-shrink-0 shadow-lg relative">
+          <img
+            src={image}
+            alt=""
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </React.Fragment>
+    ));
+  }, [text, image]);
 
   return (
     <div
       ref={itemRef}
-      className="menu-item relative overflow-hidden text-center border-t border-white/20 last:border-b border-b-white/20 transition-all duration-300"
+      className="menu-item relative overflow-hidden text-center border-t border-white/20 last:border-b border-b-white/20 transition-colors duration-300"
     >
-      {/* Main link */}
       <a
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`flex items-center justify-center h-[20vh] relative cursor-pointer uppercase no-underline font-semibold text-white text-[4vh] transition-all duration-500 ${
-          isActive ? "text-[#060010]" : "hover:text-[#060010]"
+        // Responsive height and sizing
+        className={`flex items-center justify-center h-[clamp(80px,20vh,160px)] w-full relative cursor-pointer uppercase no-underline font-semibold text-white text-[clamp(2rem,5vh,5rem)] transition-all duration-500 z-10 ${
+          isActive ? "opacity-0" : "opacity-100"
         }`}
         style={{
-          textShadow: isActive ? "0 0 20px rgba(255, 255, 255, 0.3)" : "none",
+          // Only apply text shadow if needed, can be expensive on mobile
+          textShadow: isActive ? "none" : "0 0 20px rgba(255, 255, 255, 0.4)",
         }}
+        aria-label={text}
       >
-        {text}
+        <span className="relative z-10">{text}</span>
       </a>
 
-      {/* Hover marquee reveal */}
+      {/* Marquee Container */}
       <div
         ref={marqueeRef}
-        className="absolute top-0 left-0 w-full h-full bg-white text-[#060010] overflow-hidden pointer-events-none translate-y-[101%] shadow-2xl"
+        className="absolute inset-0 w-full h-full bg-white text-[#060010] pointer-events-none opacity-0"
+        style={{ willChange: "transform, opacity" }}
+        aria-hidden="true"
       >
         <div
           ref={marqueeInnerRef}
-          className="flex items-center h-full w-[400%] whitespace-nowrap will-change-transform"
+          className="flex items-center h-full w-max"
+          style={{ willChange: "transform" }}
         >
+          {/* Loop content enough times to fill screen + buffer */}
+          {repeatedMarqueeContent}
           {repeatedMarqueeContent}
           {repeatedMarqueeContent}
         </div>

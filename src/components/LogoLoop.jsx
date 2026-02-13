@@ -17,7 +17,8 @@ const CONFIG = {
 };
 
 // === HELPERS ===
-const toCssLength = (v) => (typeof v === "number" ? `${v}px` : v ?? undefined);
+const toCssLength = (v) =>
+  typeof v === "number" ? `${v}px` : (v ?? undefined);
 const cx = (...p) => p.filter(Boolean).join(" ");
 
 // === HOOKS ===
@@ -83,7 +84,7 @@ const useAnimationLoop = (
   targetVelocity,
   seqWidth,
   isHovered,
-  pauseOnHover
+  pauseOnHover,
 ) => {
   const raf = useRef();
   const last = useRef(null);
@@ -126,6 +127,59 @@ const useAnimationLoop = (
     return () => cancelAnimationFrame(raf.current);
   }, [targetVelocity, seqWidth, isHovered, pauseOnHover]);
 };
+
+// === SUB-COMPONENT ===
+const LogoItem = memo(
+  ({ item, idx, isHovered, onHover, onLeave, scaleOnHover, logoHeight }) => {
+    return (
+      <div
+        className="relative inline-flex items-center justify-center cursor-pointer group"
+        onPointerEnter={() => onHover(idx)}
+        onPointerLeave={onLeave}
+      >
+        <AnimatePresence>
+          {isHovered && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: -20, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              style={{
+                backgroundColor: item.color || "#fff",
+                color: item.color === "#fff" ? "#000" : "#fff",
+              }}
+              className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-md shadow-md text-xs font-semibold whitespace-nowrap z-50"
+            >
+              {item.title || "Tech"}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div
+          className={cx(
+            "transition-transform duration-300 ease-out",
+            scaleOnHover && "group-hover:scale-110",
+          )}
+        >
+          {item.node ? (
+            <span className="text-[var(--logoHeight)]">{item.node}</span>
+          ) : (
+            <img
+              src={item.src}
+              alt={item.alt ?? ""}
+              title={item.title}
+              className="h-[var(--logoHeight)] w-auto object-contain select-none"
+              draggable={false}
+              loading="lazy" /* Added lazy loading for performance */
+            />
+          )}
+        </div>
+      </div>
+    );
+  },
+);
+
+LogoItem.displayName = "LogoItem";
 
 // === MAIN COMPONENT ===
 export const LogoLoop = memo(
@@ -174,7 +228,7 @@ export const LogoLoop = memo(
       targetVelocity,
       seqWidth,
       isHovered,
-      pauseOnHover
+      pauseOnHover,
     );
 
     const cssVars = useMemo(
@@ -182,62 +236,11 @@ export const LogoLoop = memo(
         "--gap": `${gap}px`,
         "--logoHeight": `${logoHeight}px`,
       }),
-      [gap, logoHeight]
+      [gap, logoHeight],
     );
 
-    // renderLogo is memoized; hover tooltips handled efficiently
-    const renderLogo = useCallback(
-      (item, key, idx) => (
-        <li
-          key={key}
-          className="flex-none relative text-[length:var(--logoHeight)] leading-[1] mx-[calc(var(--gap)/2)]"
-        >
-          <div
-            className="relative inline-flex items-center justify-center cursor-pointer group"
-            onPointerEnter={() => setHoveredIndex(idx)}
-            onPointerLeave={() => setHoveredIndex(null)}
-          >
-            <AnimatePresence>
-              {hoveredIndex === idx && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: -20, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                  style={{
-                    backgroundColor: item.color || "#fff",
-                    color: item.color === "#fff" ? "#000" : "#fff",
-                  }}
-                  className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-md shadow-md text-xs font-semibold whitespace-nowrap z-50"
-                >
-                  {item.title || "Tech"}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div
-              className={cx(
-                "transition-transform duration-300 ease-out",
-                scaleOnHover && "group-hover:scale-110"
-              )}
-            >
-              {item.node ? (
-                <span className="text-[var(--logoHeight)]">{item.node}</span>
-              ) : (
-                <img
-                  src={item.src}
-                  alt={item.alt ?? ""}
-                  title={item.title}
-                  className="h-[var(--logoHeight)] w-auto object-contain select-none"
-                  draggable={false}
-                />
-              )}
-            </div>
-          </div>
-        </li>
-      ),
-      [hoveredIndex, scaleOnHover]
-    );
+    const handleHover = useCallback((idx) => setHoveredIndex(idx), []);
+    const handleLeave = useCallback(() => setHoveredIndex(null), []);
 
     const logoList = useMemo(
       () =>
@@ -248,10 +251,33 @@ export const LogoLoop = memo(
             aria-hidden={i > 0}
             ref={i === 0 ? seqRef : undefined}
           >
-            {logos.map((item, j) => renderLogo(item, `${i}-${j}`, j))}
+            {logos.map((item, j) => (
+              <li
+                key={`${i}-${j}`}
+                className="flex-none relative text-[length:var(--logoHeight)] leading-[1] mx-[calc(var(--gap)/2)]"
+              >
+                <LogoItem
+                  item={item}
+                  idx={j}
+                  isHovered={hoveredIndex === j}
+                  onHover={handleHover}
+                  onLeave={handleLeave}
+                  scaleOnHover={scaleOnHover}
+                  logoHeight={logoHeight}
+                />
+              </li>
+            ))}
           </ul>
         )),
-      [copyCount, logos, renderLogo]
+      [
+        copyCount,
+        logos,
+        hoveredIndex,
+        handleHover,
+        handleLeave,
+        scaleOnHover,
+        logoHeight,
+      ],
     );
 
     return (
@@ -272,7 +298,7 @@ export const LogoLoop = memo(
         </div>
       </div>
     );
-  }
+  },
 );
 
 LogoLoop.displayName = "LogoLoop";

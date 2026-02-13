@@ -17,31 +17,31 @@ const Modal = memo(({ modal }) => {
     if (!active || !container.current) return;
 
     const updatePosition = () => {
-      const cards = document.querySelectorAll('.card');
+      const cards = document.querySelectorAll(".card");
       const hoveredCard = cards[index];
-      
+
       if (hoveredCard && container.current) {
         const rect = hoveredCard.getBoundingClientRect();
         const modalHeight = 400; // Approximate modal height
-        
+
         // Position above the card with some offset
         const top = rect.top - modalHeight - 20;
-        const left = rect.left + (rect.width / 2);
-        
+        const left = rect.left + rect.width / 2;
+
         container.current.style.left = `${left}px`;
         container.current.style.top = `${Math.max(20, top)}px`; // Ensure it doesn't go off-screen
       }
     };
 
     updatePosition();
-    
+
     // Update on scroll or resize
-    window.addEventListener('scroll', updatePosition, { passive: true });
-    window.addEventListener('resize', updatePosition, { passive: true });
-    
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener("resize", updatePosition, { passive: true });
+
     return () => {
-      window.removeEventListener('scroll', updatePosition);
-      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener("resize", updatePosition);
     };
   }, [active, index]);
 
@@ -57,57 +57,29 @@ const Modal = memo(({ modal }) => {
   }, [index]);
 
   // Modal scale animation - optimized
-  const variants = {
-    initial: { 
-      scale: 0, 
-      opacity: 0, 
-      x: "-50%", 
-      y: "0%",
-    },
-    open: {
-      scale: 1,
-      opacity: 1,
-      x: "-50%",
-      y: "0%",
-      transition: { 
-        duration: 0.3, 
-        ease: [0.5, 1, 0.89, 1],
-      },
-    },
-    closed: {
-      scale: 0,
-      opacity: 0,
-      x: "-50%",
-      y: "0%",
-      transition: { 
-        duration: 0.2, 
-        ease: [0.33, 1, 0.68, 1],
-      },
-    },
-  };
-
+  // variants moved outside component
   return (
     <motion.div
       ref={container}
       className="modalContainer"
-      variants={variants}
+      variants={modalVariants}
       initial="initial"
       animate={active ? "open" : "closed"}
       style={{
-        pointerEvents: active ? 'auto' : 'none',
-        willChange: active ? 'transform, opacity' : 'auto',
+        pointerEvents: active ? "auto" : "none",
+        willChange: active ? "transform, opacity" : "auto",
       }}
     >
       <div ref={sliderRef} className="modalSlider">
         {projects.map((project, i) => {
           const { color, src, title, live } = project;
           return (
-            <div 
-              key={i} 
-              className="modal" 
-              style={{ 
+            <div
+              key={i}
+              className="modal"
+              style={{
                 backgroundColor: color,
-                willChange: i === index ? 'transform' : 'auto',
+                willChange: i === index ? "transform" : "auto",
               }}
             >
               {live ? (
@@ -125,7 +97,7 @@ const Modal = memo(({ modal }) => {
                     loading={i === 0 ? "eager" : "lazy"}
                     style={{
                       opacity: i === index && active ? 1 : 0.7,
-                      transition: 'opacity 0.3s ease',
+                      transition: "opacity 0.3s ease",
                     }}
                   />
                 </a>
@@ -138,7 +110,7 @@ const Modal = memo(({ modal }) => {
                   loading={i === 0 ? "eager" : "lazy"}
                   style={{
                     opacity: i === index && active ? 1 : 0.7,
-                    transition: 'opacity 0.3s ease',
+                    transition: "opacity 0.3s ease",
                   }}
                 />
               )}
@@ -165,3 +137,32 @@ const Modal = memo(({ modal }) => {
 Modal.displayName = "Modal";
 
 export default Modal;
+
+const modalVariants = {
+  initial: {
+    scale: 0,
+    opacity: 0,
+    x: "-50%",
+    y: "0%",
+  },
+  open: {
+    scale: 1,
+    opacity: 1,
+    x: "-50%",
+    y: "0%",
+    transition: {
+      duration: 0.3,
+      ease: [0.5, 1, 0.89, 1],
+    },
+  },
+  closed: {
+    scale: 0,
+    opacity: 0,
+    x: "-50%",
+    y: "0%",
+    transition: {
+      duration: 0.2,
+      ease: [0.33, 1, 0.68, 1],
+    },
+  },
+};

@@ -1,5 +1,5 @@
 .supportingTextContainer {
-  margin-top: 10vh;
+  margin-top: 5vh;
   width: 100%;
   padding: 0 5vw;
   display: flex;
@@ -7,7 +7,7 @@
   justify-content: center;
   gap: 10%;
   flex-wrap: wrap;
-  min-height: 60vh; /* Give it some proper height */
+  min-height: 40vh; /* Reduced from 60vh */
 }
 
 .supportingTextContainer > div {

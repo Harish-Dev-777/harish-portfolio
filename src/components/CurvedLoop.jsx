@@ -46,11 +46,15 @@ const CurvedLoop = ({
   const ready = spacing > 0;
 
   const textLength = spacing;
-  const totalText = textLength
-    ? Array(Math.ceil(1800 / textLength) + 2)
-        .fill(text)
-        .join("")
-    : text;
+  const totalText = useMemo(
+    () =>
+      textLength
+        ? Array(Math.ceil(1800 / textLength) + 2)
+            .fill(text)
+            .join("")
+        : text,
+    [textLength, text],
+  );
 
   // Scroll-triggered reveal animation
   useEffect(() => {
@@ -87,8 +91,10 @@ const CurvedLoop = ({
     if (!spacing || !ready || !textPathRef.current) return;
 
     // Check for reduced motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     if (prefersReducedMotion) {
       // Static position for reduced motion
       textPathRef.current.setAttribute("startOffset", "0px");
@@ -102,7 +108,7 @@ const CurvedLoop = ({
 
     // Add will-change hint
     if (textPathRef.current.parentElement) {
-      textPathRef.current.parentElement.style.willChange = 'transform';
+      textPathRef.current.parentElement.style.willChange = "transform";
     }
 
     const loop = (time) => {
@@ -112,7 +118,7 @@ const CurvedLoop = ({
         requestAnimationFrame(loop);
         return;
       }
-      
+
       const normalizedDelta = deltaTime / 16.67; // normalize to ~60fps
       lastTime = time;
 
@@ -135,12 +141,12 @@ const CurvedLoop = ({
     };
 
     const frame = requestAnimationFrame(loop);
-    
+
     return () => {
       cancelAnimationFrame(frame);
       // Clean up will-change
       if (textPathRef.current?.parentElement) {
-        textPathRef.current.parentElement.style.willChange = 'auto';
+        textPathRef.current.parentElement.style.willChange = "auto";
       }
     };
   }, [spacing, speed, ready]);
@@ -152,7 +158,7 @@ const CurvedLoop = ({
     velRef.current = 0;
     momentumRef.current = 0;
     e.target.setPointerCapture(e.pointerId);
-    
+
     // Scale down slightly on grab
     if (containerRef.current) {
       gsap.to(containerRef.current, {
@@ -183,7 +189,7 @@ const CurvedLoop = ({
     dragRef.current = false;
     dirRef.current = velRef.current > 0 ? "right" : "left";
     momentumRef.current = velRef.current * 1.5; // Enhanced momentum on release
-    
+
     // Scale back to normal
     if (containerRef.current) {
       gsap.to(containerRef.current, {
@@ -203,11 +209,11 @@ const CurvedLoop = ({
   return (
     <div
       ref={containerRef}
-      className="min-h-screen flex items-center justify-center w-full"
-      style={{ 
-        visibility: ready ? "visible" : "hidden", 
+      className="min-h-[40vh] flex items-center justify-center w-full"
+      style={{
+        visibility: ready ? "visible" : "hidden",
         cursor: cursorStyle,
-        willChange: isVisible ? 'transform, opacity' : 'auto',
+        willChange: isVisible ? "transform, opacity" : "auto",
       }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}

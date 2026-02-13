@@ -134,7 +134,7 @@ export const contactData = {
   email: "harishmkdev@gmail.com",
   phone: "+91 9025946625",
   location:
-    "Valliyammai St, Dharan Singh Colony, Vadapalani, Chennai, Tamil Nadu 600026",
+    "10/7, Jawaharlal Nehru Salai, Senthil Nagar, Loganathan Nagar, Padmanabha Nagar, Choolaimedu, Chennai, Tamil Nadu 600094",
 };
 
 export const navItems = [

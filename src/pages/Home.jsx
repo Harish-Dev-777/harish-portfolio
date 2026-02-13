@@ -11,7 +11,7 @@ import { pageMetadata } from "../utils/seo";
 const Home = () => {
   const supportingText = `From small stores to startups - I help bring your business ideas to life with pixel-perfect design, smooth user experience, and performance-driven development.`;
 
-  const rotatingText = `Websites ✦ Web Apps ✦ E-Commerce ✦ Portfolios ✦ 3d-Modal Websites ✦`;
+  const rotatingText = `Websites ✦ Web Apps ✦ E-Commerce ✦ Portfolios ✦ 3d-Websites ✦`;
 
   return (
     <div>
@@ -37,7 +37,7 @@ const Home = () => {
         <CurvedLoop
           marqueeText={rotatingText}
           speed={3}
-          curveAmount={500}
+          curveAmount={200}
           direction="right"
           interactive={true}
           className="custom-text-style"

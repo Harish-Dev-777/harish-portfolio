@@ -1,57 +1,70 @@
 import React, { useEffect, useRef } from "react";
 import { FaArrowDown } from "react-icons/fa";
-import { motion } from "framer-motion";
 import gsap from "gsap";
-import { ScrollTrigger, ScrollSmoother } from "gsap/all";
+import { ScrollTrigger } from "gsap/all";
 import GlareHover from "../components/GlareHover";
 import { services } from "../constants/data";
 import SEO from "../components/SEO";
 import { pageMetadata } from "../utils/seo";
 import "../styles/Services.css";
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+gsap.registerPlugin(ScrollTrigger);
 
 const Services = () => {
+  const containerRef = useRef(null);
   const getInTouchRef = useRef(null);
-  const textRef = useRef(null);
-  const smootherRef = useRef(null);
+  const titleRef = useRef(null);
+  const cardsRef = useRef([]);
 
-  // === Smooth Scroll ===
-  useEffect(() => {
-    if (!smootherRef.current) {
-      smootherRef.current = ScrollSmoother.create({
-        smooth: 1,
-        effects: true,
-        smoothTouch: 0.2,
-      });
-    }
-    return () => smootherRef.current?.kill();
-  }, []);
-
- 
-  // === Get In Touch Animation ===
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Intro Animation
+      gsap.fromTo(
+        titleRef.current,
+        { y: 100, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, ease: "expo.out" },
+      );
+
+      // Staggered Cards Animation
+      gsap.fromTo(
+        ".service-card-wrapper",
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".services-list",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        },
+      );
+
+      // Get In Touch Animation (Parallax/Reveal)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: getInTouchRef.current,
-          start: "top 80%",
+          start: "top 90%",
           end: "bottom top",
-          scrub: 1.5,
+          scrub: 1,
         },
       });
 
       tl.fromTo(
         ".getInTouch-bg",
-        { yPercent: 20, scale: 1.15, opacity: 0.3 },
-        { yPercent: -10, scale: 1, opacity: 0.9, ease: "power2.out" }
+        { yPercent: 20, scale: 1.1, opacity: 0.3 },
+        { yPercent: -10, scale: 1, opacity: 0.8, ease: "none" },
       ).fromTo(
-        textRef.current,
-        { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" },
-        "-=0.8"
+        ".getInTouch-text",
+        { y: 60, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
+        "<30%",
       );
-    });
+    }, containerRef);
+
     return () => ctx.revert();
   }, []);
 
@@ -60,61 +73,60 @@ const Services = () => {
   };
 
   return (
-    <div id="services" className="services-wrapper">
+    <div ref={containerRef} id="services" className="services-wrapper">
       <SEO
         title={pageMetadata.services.title}
         description={pageMetadata.services.description}
         keywords={pageMetadata.services.keywords}
       />
-      {/* === Intro Section === */}
+      {/* Intro Section */}
       <section className="intro-section">
-        <h1 className="service-title">Services</h1>
+        <h1 ref={titleRef} className="service-title">
+          Services
+        </h1>
         <div className="scroll-down">
           <p>Scroll Down</p>
-          <motion.div
-            onClick={handleScroll}
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity }}
-            className="arrow-icon"
-          >
+          <div onClick={handleScroll} className="arrow-icon animate-bounce">
             <FaArrowDown size={26} />
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* === Services Grid === */}
+      {/* Services Grid */}
       <section className="services-list">
         {services.map((service, index) => (
           <ServiceCard key={index} {...service} />
         ))}
       </section>
 
-      {/* === Get In Touch === */}
+      {/* Get In Touch */}
       <section ref={getInTouchRef} className="getInTouch">
         <img
           src="/images/getInTouch.png"
           alt="get-in-touch"
           className="getInTouch-bg"
         />
-        <h1 ref={textRef} className="getInTouch-text">
-          Get In Touch
-        </h1>
+        <h1 className="getInTouch-text">Get In Touch</h1>
       </section>
+
+      <style>{`
+        .animate-bounce {
+          animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+          40% {transform: translateY(-10px);}
+          60% {transform: translateY(-5px);}
+        }
+      `}</style>
     </div>
   );
 };
 
 export default Services;
 
-// === Service Card ===
 const ServiceCard = ({ title, description, tools, duration }) => (
-  <motion.div
-    className="service-card-wrapper"
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6, ease: "easeOut" }}
-    viewport={{ once: true }}
-  >
+  <div className="service-card-wrapper">
     <GlareHover
       width="100%"
       height="100%"
@@ -144,5 +156,5 @@ const ServiceCard = ({ title, description, tools, duration }) => (
         </p>
       </div>
     </GlareHover>
-  </motion.div>
+  </div>
 );

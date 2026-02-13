@@ -1,5 +1,5 @@
 // GlareHover.jsx
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 
 const GlareHover = ({
   width = "500px",
@@ -52,16 +52,16 @@ const GlareHover = ({
     el.style.pointerEvents = "none";
   }, [glareAngle, transitionDuration]);
 
-  const animateIn = () => {
+  const animateIn = useCallback(() => {
     const el = overlayRef.current;
     if (!el) return;
     // move overlay across; use translate3d for GPU acceleration
     el.style.transform =
       "translate3d(20%, 20%, 0) rotate(" + glareAngle + "deg)";
     el.style.opacity = "1";
-  };
+  }, [glareAngle]);
 
-  const animateOut = () => {
+  const animateOut = useCallback(() => {
     const el = overlayRef.current;
     if (!el) return;
     if (playOnce) {
@@ -74,7 +74,7 @@ const GlareHover = ({
         "translate3d(-120%, -120%, 0) rotate(" + glareAngle + "deg)";
       el.style.opacity = "0";
     }
-  };
+  }, [glareAngle, playOnce]);
 
   // overlay style uses a rotated rectangle that fades in/out
   const overlayStyle = {
@@ -115,4 +115,4 @@ const GlareHover = ({
   );
 };
 
-export default GlareHover;
+export default React.memo(GlareHover);

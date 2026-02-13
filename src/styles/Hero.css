@@ -19,7 +19,7 @@
 .heroTitle {
   font-size: 100px;
   padding-top: 5vw;
-  margin-left: 42px;
+  margin-left: 5vw; /* Normalized left alignment */
   color: var(--text-primary);
   z-index: 5;
   position: relative;
@@ -28,7 +28,7 @@
 /* === Subtitle === */
 .subTitle {
   position: absolute;
-  left: 45px;
+  left: 5vw; /* Normalized left alignment */
   top: 35vh;
   color: var(--text-secondary);
   max-width: 600px;
@@ -39,7 +39,7 @@
 /* === Buttons === */
 .btns {
   top: 52vh;
-  left: 42px;
+  left: 5vw; /* Normalized left alignment */
   position: absolute;
   display: flex;
   gap: 3em;
@@ -186,19 +186,19 @@
 @media (max-width: 1024px) {
   .heroTitle {
     font-size: 80px;
-    margin-left: 30px;
+    margin-left: 5vw;
     padding-top: 12vh;
   }
 
   .subTitle {
     font-size: 1.2rem;
     max-width: 80%;
-    left: 30px;
+    left: 5vw;
     top: 38vh;
   }
 
   .btns {
-    left: 30px;
+    left: 5vw;
     top: 52vh;
     gap: 2em;
   }
@@ -235,10 +235,10 @@
   .btns {
     position: relative;
     top: 150px;
-    left: 0;
-    width: 100%;
+    left: 20px; /* Aligned with text */
+    width: auto;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* Aligned with text */
     gap: 1.5em;
   }
 
@@ -248,10 +248,9 @@
     padding: 10px 20px;
   }
 
-  .hireBtn{
-    padding:10px 30px;
+  .hireBtn {
+    padding: 10px 30px;
   }
-  
 
   .sliderContainer {
     top: calc(100vh - 200px);
@@ -263,6 +262,6 @@
   }
 
   .robotModel {
-    display: none; 
+    display: none;
   }
 }
