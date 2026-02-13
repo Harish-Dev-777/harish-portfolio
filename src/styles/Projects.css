@@ -7,7 +7,6 @@
   background: var(--color-primary-bg);
   color: var(--text-primary);
   padding-bottom: 10vh;
-  will-change: transform, opacity;
 }
 
 /* === Project Wrapper === */
@@ -18,6 +17,7 @@
   gap: 2.5rem;
   margin-bottom: 10vh;
 }
+
 .titleContainer {
   width: 100vw;
   height: 100vh;
@@ -41,6 +41,12 @@
 .projectCardWrapper {
   position: relative;
   width: 100%;
+  /* Removed content-visibility to fix rendering issues with off-screen modals */
+  z-index: 1;
+}
+
+.projectCardWrapper:hover {
+  z-index: 10; /* Bring hovered card to front */
 }
 
 /* === Individual Project Card === */
@@ -52,17 +58,25 @@
   padding: 50px 0;
   cursor: pointer;
   position: relative;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  will-change: transform, opacity;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
   backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
   z-index: 1;
 }
 
+/* Project title - Full project name display */
 .card h2 {
   font-size: 3.5vw;
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
-  transition: transform 0.3s ease, color 0.3s ease;
+  letter-spacing: -0.01em;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translate3d(0, 0, 0);
 }
 
 .cardBottom {
@@ -76,20 +90,27 @@
   font-weight: 300;
   color: var(--text-secondary);
   margin: 0;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translate3d(0, 0, 0);
 }
 
 .card:hover {
   opacity: 0.95;
-  transform: translateY(-2px) scale(1.02);
+  transform: translate3d(0, -2px, 0);
 }
 
 .card:hover h2 {
-  transform: translateX(-10px);
+  transform: translate3d(
+    10px,
+    0,
+    0
+  ); /* Moved right slightly instead of left to avoid hiding */
 }
 
 .card:hover p {
-  transform: translateX(8px);
+  transform: translate3d(-10px, 0, 0); /* Moved left slightly */
 }
 
 /* === Go Live section === */
@@ -101,41 +122,46 @@
   font-weight: 500;
   font-size: 1rem;
   opacity: 0;
-  transform: translateY(8px);
-  transition: all 0.35s ease;
+  transform: translate3d(0, 8px, 0);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover .goLive {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 
 .goLiveIcon {
   font-size: 1.3rem;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translate3d(0, 0, 0);
 }
 
 .card:hover .goLiveIcon {
-  transform: rotate(45deg);
+  transform: translate3d(0, 0, 0) rotate(45deg);
   color: #999;
 }
 
-/* === Card Modal (appears above each card) === */
+/* === Card Modal (appears centered on hover) === */
 .cardModal {
   position: absolute;
-  bottom: calc(100% + 20px);
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 400px;
-  height: 350px;
+  transform: translate3d(-50%, -50%, 0);
+  width: 350px;
+  height: 250px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
-              0 0 30px rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
   z-index: 10;
   pointer-events: auto;
   will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .cardModalContent {
@@ -163,11 +189,13 @@
   border-radius: 14px;
   object-fit: cover;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .cardModalImageLink:hover img {
-  transform: scale(1.05);
+  transform: translate3d(0, 0, 0) scale(1.05);
 }
 
 .cardModalOverlay {
@@ -181,7 +209,7 @@
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -209,7 +237,7 @@
   }
 
   .card h2 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
   }
 
   .cardModal {
@@ -229,7 +257,7 @@
   }
 
   .card h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   .cardModal {
@@ -248,7 +276,7 @@
   }
 
   .card h2 {
-    font-size: 1.6rem;
+    font-size: 1.75rem;
   }
 
   .cardModal {

@@ -1,35 +1,59 @@
 export const projects = [
   {
-    title: "Trendly - Shopping App",
-    description:
-      "A futuristic shopping experience built with Next.js and Tailwind CSS. Includes product grid, wishlist, cart, and smooth animations using Framer Motion.",
-    src: "/images/trendly.jpg",
-    color: "#737373",
-    live: "https://trendlyshop.vercel.app",
+    title: "Aether Weather",
+    type: "Weather Application",
+    description: "Aether Weather - Modern weather application",
+    src: "/images/Projects/aether_Weather.png",
+    color: "#4A90E2",
+    live: "https://aether-weather-six.vercel.app/",
   },
   {
-    title: "Portfolio 3D Experience",
-    description:
-      "A premium portfolio built with React, Three.js, and GSAP featuring 3D character interactions, smooth scroll animations, and a custom cursor.",
-    src: "/images/portfolio.jpg",
-    color: "#64748b",
-    live: "https://harish-portfolio-tawny.vercel.app/",
+    title: "Agamudaiyar",
+    type: "Community Platform",
+    description: "Agamudaiyar - Community platform",
+    src: "/images/Projects/agamudaiyar.png",
+    color: "#E67E22",
+    live: "https://agamudaiyar.vercel.app/",
   },
   {
-    title: "Weatherly - Real-time Weather App",
-    description:
-      "A clean, responsive weather app using React and OpenWeather API with location-based forecasts and dynamic backgrounds.",
-    src: "/images/weatherly.jpg",
-    color: "#3f3f46",
-    live: "https://weatherlyapp.vercel.app",
+    title: "Shadow Forge",
+    type: "Creative Showcase",
+    description: "Shadow Forge - Creative showcase",
+    src: "/images/Projects/shadowForge.png",
+    color: "#9B59B6",
+    live: "https://shadow-forge-uwyd.vercel.app/",
   },
   {
-    title: "Taskify - Productivity Dashboard",
-    description:
-      "A Kanban-style task manager built with React, Redux, and Firebase to help teams collaborate and stay productive.",
-    src: "/images/taskify.png",
-    color: "#52525b",
-    live: "https://taskifydashboard.vercel.app",
+    title: "Winter Max",
+    type: "E-commerce Store",
+    description: "Winter Max - Seasonal collection",
+    src: "/images/Projects/winter_max.png",
+    color: "#3498DB",
+    live: "https://winter-max.vercel.app/",
+  },
+  {
+    title: "Trendly",
+    type: "E-commerce Platform",
+    description: "Trendly - E-commerce platform",
+    src: "/images/Projects/trendly.png",
+    color: "#E74C3C",
+    live: "https://trendly-ecommerce-one.vercel.app/",
+  },
+  {
+    title: "Smile Care Clinic",
+    type: "Healthcare Website",
+    description: "Smile Care Clinic - Healthcare website",
+    src: "/images/Projects/smile_care_clinic.png",
+    color: "#1ABC9C",
+    live: "https://smile-care-clinic.vercel.app/",
+  },
+  {
+    title: "Spice Soul",
+    type: "Restaurant Website",
+    description: "Spice Soul - Restaurant experience",
+    src: "/images/Projects/spice_soul.png",
+    color: "#F39C12",
+    live: "https://spice-soul.vercel.app/",
   },
 ];
 
@@ -122,7 +146,7 @@ export const navItems = [
 ];
 
 export const socialLinks = [
-  { name: "LinkedIn", url: "https://www.linkedin.com/in/harish-cse-45b076383" },
+  { name: "LinkedIn", url: "https://www.linkedin.com/in/harishdev777" },
   { name: "GitHub", url: "https://github.com/Harish-Dev-777" },
   { name: "Instagram", url: "https://www.instagram.com/codecrush_777/" },
   { name: "WhatsApp", url: "https://wa.me/919025946625" },
